@@ -567,7 +567,7 @@ const DEFAULT_CHECKS = [
   { q: "Name one thing from today you'd want to revisit or go deeper on.", type: "open" }
 ];
 
-// ─── State ───────────────────────────────────────────────────────────────────
+  const PROXY_URL = 'https://kilo-coach-proxy.joel-9ea.workers.dev';
 let currentUser = null;
 let userData = {};
 let chatHistory = [];
@@ -788,7 +788,7 @@ YOUR STYLE: Warm but direct. Like a good team lead. Keep responses to 2-4 senten
 
   try {
     const messages = [...chatHistory].slice(-10);
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -816,8 +816,18 @@ YOUR STYLE: Warm but direct. Like a good team lead. Keep responses to 2-4 senten
 function triggerCheckin() {
   if (isLoading || quizActive) return;
   const day = userData.currentDay || 1;
-  const dayInfo = PROGRAM.days[day];
-  const msg = `Let's do your Day ${day} check-in.\n\nToday's focus: **${dayInfo.title}**\n\n${dayInfo.subtitle}\n\nBefore we get into a knowledge check - how are you feeling about today's content? Did anything click particularly well, or is there something you're still working through?`;
+  const dayCompleted = userData.completedDays && userData.completedDays.includes(day);
+  const checkinDone = userData.checkins && userData.checkins[day];
+
+  let msg;
+  if (dayCompleted) {
+    msg = `You've marked Day ${day} complete. Before you move on - what's the one thing that stuck with you most today?`;
+  } else if (checkinDone) {
+    msg = `How's it going so far today? Anything coming up as you work through the material that you want to talk through?`;
+  } else {
+    msg = `What are you working on today, and is there anything you want to flag before you dive in?`;
+  }
+
   addCoachMessage(msg);
   chatHistory.push({ role: 'assistant', content: msg });
   userData.checkins = userData.checkins || {};
@@ -912,7 +922,7 @@ async function submitOpenAnswer(qIdx) {
 
   const q = currentQuiz[qIdx];
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
