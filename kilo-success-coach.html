@@ -808,14 +808,19 @@ YOUR STYLE: Warm but direct. Like a good team lead. Keep responses to 2-4 senten
         messages
       })
     });
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`HTTP ${response.status}: ${errText}`);
+    }
     const data = await response.json();
-    const reply = data.content?.[0]?.text || "Something went wrong - try again.";
+    const reply = data.content?.[0]?.text || "Got your message - try asking again.";
     removeLoadingMessage();
     addCoachMessage(reply);
     chatHistory.push({ role: 'assistant', content: reply });
   } catch(e) {
     removeLoadingMessage();
-    addCoachMessage("Having trouble connecting right now. Try again in a moment.");
+    console.error('Coach error:', e);
+    addCoachMessage(`Connection issue - here's what happened: ${e.message}. Try sending your message again.`);
   }
 
   isLoading = false;
@@ -826,16 +831,18 @@ YOUR STYLE: Warm but direct. Like a good team lead. Keep responses to 2-4 senten
 function triggerCheckin() {
   if (isLoading || quizActive) return;
   const day = userData.currentDay || 1;
+  const dayInfo = PROGRAM.days[day];
   const dayCompleted = userData.completedDays && userData.completedDays.includes(day);
-  const checkinDone = userData.checkins && userData.checkins[day];
+  const preCheckFailed = userData.preChecks && userData.preChecks[day] === 'failed';
+  const notionLink = NOTION_PAGES[day] ? `\n\n👉 **[Open Day ${day} in Notion](${NOTION_PAGES[day]})**` : '';
 
   let msg;
   if (dayCompleted) {
-    msg = `You've marked Day ${day} complete. Before you move on - what's the one thing that stuck with you most today?`;
-  } else if (checkinDone) {
-    msg = `How's it going so far today? Anything coming up as you work through the material that you want to talk through?`;
+    msg = `Day ${day} is marked complete. What's the one thing that stuck with you most today?`;
+  } else if (preCheckFailed) {
+    msg = `You're working through Day ${day}: **${dayInfo.title}**.\n\nRemember the flow: Read, Watch, then Do the hands-on tasks in the actual platforms. The doing is what makes it stick - don't skip it.\n\n- **Websites:** Log into usekilosales.com/wp-admin\n- **GLM:** Log into the Kilo Fitness test account\n- **GMS:** Log into app.usekilo.com${notionLink}\n\nWhen you've worked through it all, hit **"🧠 Knowledge check"** and I'll confirm it's landed.`;
   } else {
-    msg = `What are you working on today, and is there anything you want to flag before you dive in?`;
+    msg = `Today is **Day ${day}: ${dayInfo.title}**.\n\n${dayInfo.subtitle}${notionLink}\n\nStart with the pre-check if you haven't already. If it sends you into the content, work through the Read, Watch, and Do sections in Notion - in that order. Ask me anything as you go.`;
   }
 
   addCoachMessage(msg);
@@ -845,7 +852,36 @@ function triggerCheckin() {
   saveLocal();
 }
 
-// ─── Pre-Check ───────────────────────────────────────────────────────────────
+  addCoachMessage(msg);
+  chatHistory.push({ role: 'assistant', content: msg });
+  userData.checkins = userData.checkins || {};
+  userData.checkins[day] = new Date().toISOString();
+  saveLocal();
+}
+
+// Notion day page URLs
+const NOTION_PAGES = {
+  1: 'https://app.notion.com/p/38200fd1d901812b8d19d89b5bdde5aa',
+  2: 'https://app.notion.com/p/38200fd1d901812c829be1ab6e6bb0e7',
+  3: 'https://app.notion.com/p/38900fd1d90181468691d72cc2c82480',
+  4: 'https://app.notion.com/p/38900fd1d901816da50adf52abb488fd',
+  5: 'https://app.notion.com/p/38900fd1d901818cbef2dce5dbb4c9c4',
+  6: 'https://app.notion.com/p/38900fd1d90181c0bc92ff60cd14e13c',
+  7: 'https://app.notion.com/p/38900fd1d9018189b181ffee8221a6d9',
+  8: 'https://app.notion.com/p/38900fd1d90181ec87dece3dbe34a4d7',
+  9: 'https://app.notion.com/p/38900fd1d90181988b9fc78366241700',
+  10: 'https://app.notion.com/p/38900fd1d9018102873dec6e33c41b4e',
+  11: 'https://app.notion.com/p/38900fd1d90181ea941fef5e72368be7',
+  12: 'https://app.notion.com/p/38900fd1d90181ceb2dcd73328e78377',
+  13: 'https://app.notion.com/p/38900fd1d901818c82eac46b3a950e74',
+  14: 'https://app.notion.com/p/38900fd1d90181c6a04fd72018494492',
+  15: 'https://app.notion.com/p/38900fd1d90181d08c06e69ddbef0583',
+  16: 'https://app.notion.com/p/38900fd1d90181fbae69c18f2a9f057e',
+  17: 'https://app.notion.com/p/38900fd1d901810f903bd6d79fb3e7f5',
+  18: 'https://app.notion.com/p/38900fd1d90181ad95aaf73f8a260d92',
+  19: 'https://app.notion.com/p/38900fd1d90181f8883fe1adf29471b8',
+  20: 'https://app.notion.com/p/38900fd1d90181df88a9d9f72aa82ae4'
+};
 function triggerPreCheck() {
   if (isLoading || quizActive) return;
   const day = userData.currentDay || 1;
@@ -1008,15 +1044,14 @@ function finishQuiz() {
   let feedback;
 
   if (isPreCheck) {
-    if (pct >= 80) {
+    if (pct === 100) {
       userData.preChecks = userData.preChecks || {};
       userData.preChecks[day] = 'passed';
-      // Also mark day complete automatically on pre-check pass
       if (!userData.completedDays) userData.completedDays = [];
       if (!userData.completedDays.includes(day)) userData.completedDays.push(day);
       if (day < 60) userData.currentDay = day + 1;
       saveLocal();
-      feedback = `Pre-check passed - you clearly know this material. Day ${day} is marked complete and you're moving to Day ${day + 1}: **${PROGRAM.days[Math.min(day + 1, 60)].title}**. Come back tomorrow to keep the momentum going.`;
+      feedback = `Perfect score - you know this material cold. Day ${day} is marked complete and you're moving to **Day ${day + 1}: ${PROGRAM.days[Math.min(day + 1, 60)].title}**. Come back tomorrow to keep going.`;
       updateDayHeader();
       updateSidebar();
       updateProgress();
@@ -1024,9 +1059,8 @@ function finishQuiz() {
       userData.preChecks = userData.preChecks || {};
       userData.preChecks[day] = 'failed';
       saveLocal();
-      feedback = pct >= 50
-        ? `Partial knowledge here - some gaps to close. Work through today's content in Notion then come back and hit "Knowledge check" when you're ready.`
-        : `This material needs your attention today. Head into the Day ${day} Notion page, work through the content, and come back for a full knowledge check when you're done.`;
+      const notionLink = NOTION_PAGES[day] ? `\n\n👉 **[Open Day ${day} in Notion](${NOTION_PAGES[day]})**` : '';
+      feedback = `You got ${correct}/${quizTotal} - you need a perfect score to skip this day. That means there are gaps here worth closing properly.\n\nHead into the Day ${day} Notion page and work through the **Read**, **Watch**, and **Do** sections. The "Do" tasks are the important part - make sure you're actually logging into the platforms and completing the hands-on work, not just reading about it.${notionLink}\n\nCome back and hit **"🧠 Knowledge check"** when you're done.`;
     }
   } else {
     userData.scores = userData.scores || {};
