@@ -637,6 +637,14 @@ function switchUser() {
   currentUser = null;
   userData = {};
   chatHistory = [];
+  quizActive = false;
+  isLoading = false;
+  currentQuiz = null;
+  quizIndex = 0;
+  quizScore = 0;
+  quizTotal = 0;
+  window._isPreCheck = false;
+  document.getElementById('sendBtn').disabled = false;
   document.getElementById('userScreen').style.display = 'flex';
   document.getElementById('dayScreen').style.display = 'none';
   document.getElementById('nameInput').value = '';
