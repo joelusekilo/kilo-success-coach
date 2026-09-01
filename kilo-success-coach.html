@@ -378,9 +378,10 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Quick Actions</div>
-      <div class="phase-item" onclick="showReportCard()">📊 Report Card</div>
-      <div class="phase-item" onclick="triggerCheckin()">✅ Daily Check-In</div>
+      <div class="phase-item" onclick="triggerPreCheck()">⚡ Pre-Check</div>
+      <div class="phase-item" onclick="triggerCheckin()">✅ Check-In</div>
       <div class="phase-item" onclick="triggerKnowledgeCheck()">🧠 Knowledge Check</div>
+      <div class="phase-item" onclick="showReportCard()">📊 Report Card</div>
     </div>
     <div class="progress-bar-wrap">
       <div class="progress-label">
@@ -416,10 +417,11 @@
       <div class="chat-area" id="chatArea"></div>
       <div class="input-area">
         <div class="action-btns">
-          <button class="action-btn" onclick="triggerCheckin()">✅ Start check-in</button>
+          <button class="action-btn" onclick="triggerPreCheck()">⚡ Pre-check</button>
+          <button class="action-btn" onclick="triggerCheckin()">✅ Check-in</button>
           <button class="action-btn" onclick="triggerKnowledgeCheck()">🧠 Knowledge check</button>
-          <button class="action-btn" onclick="moveToNextDay()">➡️ Mark day complete</button>
-          <button class="action-btn" onclick="showReportCard()">📊 My report card</button>
+          <button class="action-btn" onclick="moveToNextDay()">➡️ Mark complete</button>
+          <button class="action-btn" onclick="showReportCard()">📊 Report card</button>
         </div>
         <div class="input-row">
           <textarea class="chat-input" id="chatInput" placeholder="Ask your coach anything..." onkeydown="handleKey(event)"></textarea>
@@ -659,7 +661,7 @@ function showDayScreen() {
 
   let greeting;
   if (!isReturning) {
-    greeting = `Welcome to the Kilo Success Team Onboarding Program, ${userData.name}! 🎉\n\nI'm your coach for the next 60 days. Think of me as a teammate who knows this program inside and out. I'll check in with you each day, run knowledge checks to make sure things are sticking, and track your progress so you and your team lead can see how you're developing.\n\nYou're starting on **Day 1: ${dayInfo.title}**.\n\n${dayInfo.subtitle}\n\nWhen you're ready, hit "Start check-in" or just ask me anything.`;
+    greeting = `Welcome to the Kilo Success Team Onboarding Program, ${userData.name}! 🎉\n\nI'm your coach for the next 60 days. Here's how this works:\n\n**Each day starts with a pre-check** - 1 to 3 quick questions. If you already know the material, you move straight through and the day is marked complete. If not, I'll point you to the content in Notion and you come back for a full knowledge check when you're ready.\n\nYour progress and scores are tracked so your team leads can see exactly where you are.\n\nYou're on **Day 1: ${dayInfo.title}**. Hit **"Pre-check"** to get started, or ask me anything first.`;
   } else {
     const lastScore = userData.scores[userData.currentDay - 1];
     const scoreNote = lastScore ? ` You scored ${lastScore.correct}/${lastScore.total} on your last knowledge check.` : '';
@@ -835,6 +837,34 @@ function triggerCheckin() {
   saveLocal();
 }
 
+// ─── Pre-Check ───────────────────────────────────────────────────────────────
+function triggerPreCheck() {
+  if (isLoading || quizActive) return;
+  const day = userData.currentDay || 1;
+
+  if (userData.preChecks && userData.preChecks[day] === 'passed') {
+    addCoachMessage(`You already passed the pre-check for Day ${day} - you're cleared to move on. Hit "Mark day complete" when you're done or ask me anything about today's content.`);
+    return;
+  }
+
+  let checks = KNOWLEDGE_CHECKS[day];
+  if (!checks) {
+    const keys = Object.keys(KNOWLEDGE_CHECKS).map(Number).filter(k => k <= day);
+    checks = keys.length > 0 ? KNOWLEDGE_CHECKS[Math.max(...keys)] : DEFAULT_CHECKS;
+  }
+
+  const preCheckQuestions = checks.slice(0, Math.min(3, checks.length));
+  currentQuiz = preCheckQuestions;
+  quizIndex = 0;
+  quizScore = 0;
+  quizTotal = preCheckQuestions.length;
+  quizActive = true;
+  window._isPreCheck = true;
+
+  addCoachMessage(`Before we get into Day ${day} - quick pre-check. ${preCheckQuestions.length} questions. If you already know this material you'll move straight through. If not, it'll flag where to focus.`);
+  setTimeout(showNextQuestion, 500);
+}
+
 // ─── Knowledge Check ──────────────────────────────────────────────────────────
 function triggerKnowledgeCheck() {
   if (isLoading || quizActive) return;
@@ -961,18 +991,45 @@ function finishQuiz() {
   const day = userData.currentDay || 1;
   const pct = Math.round((Math.max(0, quizScore) / quizTotal) * 100);
   const correct = Math.max(0, Math.round(quizScore));
-
-  userData.scores = userData.scores || {};
-  userData.scores[day] = { correct, total: quizTotal, pct, date: new Date().toISOString() };
-  saveLocal();
+  const isPreCheck = window._isPreCheck || false;
+  window._isPreCheck = false;
 
   const scoreClass = pct >= 80 ? 'high' : pct >= 60 ? 'mid' : 'low';
   const emoji = pct >= 80 ? '🟢' : pct >= 60 ? '🟡' : '🔴';
-  const feedback = pct >= 80
-    ? "Strong result - that content is clearly landing. You're ready to move on."
-    : pct >= 60
-    ? "Decent foundation. A couple of areas worth revisiting before you move on."
-    : "Worth going back through today's material before moving forward. The gaps will compound if you don't close them now.";
+
+  let feedback;
+
+  if (isPreCheck) {
+    if (pct >= 80) {
+      userData.preChecks = userData.preChecks || {};
+      userData.preChecks[day] = 'passed';
+      // Also mark day complete automatically on pre-check pass
+      if (!userData.completedDays) userData.completedDays = [];
+      if (!userData.completedDays.includes(day)) userData.completedDays.push(day);
+      if (day < 60) userData.currentDay = day + 1;
+      saveLocal();
+      feedback = `Pre-check passed - you clearly know this material. Day ${day} is marked complete and you're moving to Day ${day + 1}: **${PROGRAM.days[Math.min(day + 1, 60)].title}**. Come back tomorrow to keep the momentum going.`;
+      updateDayHeader();
+      updateSidebar();
+      updateProgress();
+    } else {
+      userData.preChecks = userData.preChecks || {};
+      userData.preChecks[day] = 'failed';
+      saveLocal();
+      feedback = pct >= 50
+        ? `Partial knowledge here - some gaps to close. Work through today's content in Notion then come back and hit "Knowledge check" when you're ready.`
+        : `This material needs your attention today. Head into the Day ${day} Notion page, work through the content, and come back for a full knowledge check when you're done.`;
+    }
+  } else {
+    userData.scores = userData.scores || {};
+    userData.scores[day] = { correct, total: quizTotal, pct, date: new Date().toISOString() };
+    saveLocal();
+    feedback = pct >= 80
+      ? "Strong result - that content is clearly landing. You're ready to move on."
+      : pct >= 60
+      ? "Decent foundation. A couple of areas worth revisiting before you move on."
+      : "Worth going back through today's material before moving forward. The gaps will compound if you don't close them now.";
+  }
 
   const chatArea = document.getElementById('chatArea');
   const div = document.createElement('div');
@@ -980,7 +1037,7 @@ function finishQuiz() {
   div.innerHTML = `
     <div class="msg-avatar">KC</div>
     <div><div class="msg-bubble">
-      Knowledge check complete. ${feedback}
+      ${feedback}
       <br><br>
       <span class="score-badge ${scoreClass}">${emoji} ${correct}/${quizTotal} — ${pct}%</span>
     </div></div>`;
