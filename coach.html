@@ -415,8 +415,6 @@ function addCoachMsg(text) {
   ca.appendChild(div);
   ca.scrollTop = ca.scrollHeight;
 }
-
-function addUserMsg(text) {
   var ca = document.getElementById('chatArea');
   var initials = userData.name ? userData.name.split(' ').map(function(n){return n[0];}).join('').toUpperCase().slice(0,2) : 'ME';
   var div = document.createElement('div');
@@ -493,7 +491,7 @@ function triggerCheckin() {
   var info = DAYS[day];
   var dayDone = userData.completedDays && userData.completedDays.indexOf(day) !== -1;
   var preCheckFailed = userData.preChecks && userData.preChecks[day] === 'failed';
-  var notionLink = NOTION_PAGES[day] ? '\n\nOpen Day ' + day + ' in Notion: ' + NOTION_PAGES[day] : '';
+  var notionLink = NOTION_PAGES[day] ? '\n\n<a href="' + NOTION_PAGES[day] + '" target="_blank" style="color:#2D6A4F;font-weight:700;">Open Day ' + day + ' in Notion</a>' : '';
   var msg;
   if (dayDone) {
     msg = 'Day ' + day + ' is marked complete. What is the one thing that stuck with you most today?';
@@ -579,7 +577,7 @@ function selectOpt(selected, correct, qIdx) {
     setTimeout(function() { addCoachMsg('Correct!'); quizIndex++; setTimeout(showQuestion, 600); }, 400);
   } else {
     setTimeout(function() {
-      addCoachMsg('Not quite - the right answer is ' + currentQuiz[quizIndex].opts[correct] + '. Worth revisiting that section.');
+      addCoachMsg('Question ' + (qIdx + 1) + ' - not quite. The right answer is "' + currentQuiz[qIdx].opts[correct] + '". Keep that one in mind.');
       quizIndex++;
       setTimeout(showQuestion, 800);
     }, 400);
@@ -593,19 +591,20 @@ function submitOpen(qIdx) {
   var text = ans.value.trim();
   addUserMsg(text);
   quizIndex++;
-  quizScore += 0.5;
+  quizScore += 0.75;
   isLoading = true;
   addLoading();
   var q = currentQuiz[qIdx];
+  var qNum = qIdx + 1;
   fetch(PROXY_URL, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:200, messages:[{role:'user', content:'You are the Kilo Success Team Coach evaluating a knowledge check answer. Be brief (2-3 sentences), direct, constructive.\n\nQuestion: ' + q.q + '\nAnswer: ' + text + '\n\nEvaluate based on Kilo context: Websites (WordPress, editable vs concierge templates, Text/HTML tab rule), GLM (GoHighLevel, leads/automations/calendars), GMS (member management, app.usekilo.com).\n\nGive quick feedback. End with one word on its own line: STRONG, GOOD, or REVISIT.'}]})
+    body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:200, messages:[{role:'user', content:'You are the Kilo Success Team Coach evaluating a knowledge check answer. Be encouraging and generous - if the answer shows any reasonable understanding, that is good enough. Only mark REVISIT if the answer is clearly wrong or completely off topic.\n\nQuestion ' + qNum + ': ' + q.q + '\nAnswer: ' + text + '\n\nKilo context: Websites (WordPress, editable vs concierge templates, always use Text/HTML tab, text-only edits for Success team, everything else via Basecamp to website team), GLM (GoHighLevel-based, leads/automations/calendars, Kilo Fitness test account), GMS (Kilo own platform, members/packages/billing, app.usekilo.com).\n\nGive 1-2 sentences of feedback referencing Question ' + qNum + '. Be specific about what they got right. End with exactly one word on its own line: STRONG, GOOD, or REVISIT.'}]})
   }).then(function(r) { return r.json(); }).then(function(data) {
-    var feedback = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : 'Good thinking - keep going.';
+    var feedback = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : 'Good answer - keep going.';
     removeLoading();
     addCoachMsg(feedback);
-    if (feedback.indexOf('STRONG') !== -1) quizScore += 0.5;
+    if (feedback.indexOf('STRONG') !== -1) quizScore += 0.25;
     else if (feedback.indexOf('REVISIT') !== -1) quizScore -= 0.5;
     isLoading = false;
     setTimeout(showQuestion, 800);
@@ -641,8 +640,8 @@ function finishQuiz() {
       if (!userData.preChecks) userData.preChecks = {};
       userData.preChecks[day] = 'failed';
       saveLocal();
-      var link = NOTION_PAGES[day] ? '\n\nNotion link: ' + NOTION_PAGES[day] : '';
-      feedback = 'You got ' + correct + '/' + quizTotal + ' - you need a perfect score to skip this day. Head into the Day ' + day + ' Notion page and work through the Read, Watch, and Do sections. The Do tasks are the most important - log into the actual platforms.' + link + '\n\nCome back and hit Knowledge check when you are done.';
+      var link = NOTION_PAGES[day] ? ' <a href="' + NOTION_PAGES[day] + '" target="_blank" style="color:#2D6A4F;font-weight:700;">Open Day ' + day + ' in Notion</a>' : '';
+      feedback = 'You got ' + correct + '/' + quizTotal + ' - you need a perfect score to skip this day. Scroll up to see exactly which questions you missed. Then head into the Day ' + day + ' Notion page and work through the Read, Watch, and Do sections - the Do tasks matter most, make sure you are logging into the actual platforms.' + link + '\n\nCome back and hit Knowledge check when you are done.';
     }
   } else {
     if (!userData.scores) userData.scores = {};
