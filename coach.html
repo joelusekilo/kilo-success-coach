@@ -1084,7 +1084,7 @@ function finishQuiz() {
     <div><div class="msg-bubble">
       ${feedback}
       <br><br>
-      <span class="score-badge ${scoreClass}">${emoji} ${correct}/${quizTotal} — ${pct}%</span>
+      <span class="score-badge ${scoreClass}">${emoji} ${correct}/${quizTotal} - ${pct}%</span>
     </div></div>`;
   chatArea.appendChild(div);
   chatArea.scrollTop = chatArea.scrollHeight;
@@ -1134,10 +1134,10 @@ function showReportCard() {
     <div>
       <div class="msg-bubble">Here's your current report card, ${userData.name}.</div>
       <div class="report-card">
-        <div class="report-title">📊 Progress Report — ${userData.name}</div>
+        <div class="report-title">📊 Progress Report - ${userData.name}</div>
         <div class="report-row"><div class="report-row-label">Current day</div><div class="report-row-val">Day ${day} of 60</div></div>
         <div class="report-row"><div class="report-row-label">Days completed</div><div class="report-row-val ${completed >= 40 ? 'green' : completed >= 20 ? 'amber' : 'red'}">${completed}/60</div></div>
-        <div class="report-row"><div class="report-row-label">Current phase</div><div class="report-row-val">Phase ${phase} — ${PROGRAM.phases[phase - 1].name}</div></div>
+        <div class="report-row"><div class="report-row-label">Current phase</div><div class="report-row-val">Phase ${phase} - ${PROGRAM.phases[phase - 1].name}</div></div>
         <div class="report-row"><div class="report-row-label">Phase progress</div><div class="report-row-val">${phaseProgress}%</div></div>
         <div class="report-row"><div class="report-row-label">Avg knowledge check score</div><div class="report-row-val ${avgClass}">${avg > 0 ? avg + '%' : 'No checks yet'}</div></div>
         <div class="report-row"><div class="report-row-label">Program started</div><div class="report-row-val">${userData.startDate ? new Date(userData.startDate).toLocaleDateString() : 'Today'}</div></div>
