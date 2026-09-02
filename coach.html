@@ -238,9 +238,271 @@ var DAYS = {
   60: {title:'Graduation', sub:'You made it. Close the loop and step into your full role.', phase:3}
 };
 
+var PRE_CHECKS = {
+  1: [
+    {q:'Name the three Kilo products.', opts:['Websites, GLM, GMS','Websites, CRM, GMS','GLM, GMS, DeskPro','Websites, GLM, Basecamp'], ans:0},
+    {q:'What tool does Kilo use for the client-facing support inbox?', opts:['Help Scout','Notion','DeskPro','Basecamp'], ans:2},
+    {q:'What does the Success team proficiency definition say - fill in the blank: know enough to not embarrass Kilo, know where to _______, and know when to _______.', opts:['find the answer / escalate','ask questions / follow up','check Notion / call the team','read the docs / escalate'], ans:0}
+  ],
+  2: [
+    {q:'The Website attracts, GLM converts, GMS _______.', opts:['onboards','retains','tracks','manages'], ans:1},
+    {q:'Where are client website backend credentials stored?', opts:['Notion','DeskPro','Basecamp','1Password'], ans:2},
+    {q:'What email do you use to log into the GMS training account?', opts:['admin@usekilo.com','success@usekilo.com','training@usekilo.com','support@usekilo.com'], ans:1}
+  ],
+  3: [
+    {q:'Which tab must you always use when editing content in a Kilo WordPress site?', opts:['Visual','Text/HTML','Preview','Draft'], ans:1},
+    {q:'What are the two Kilo website template types?', opts:['Basic and Premium','Editable and Concierge','Standard and Custom','WordPress and Elementor'], ans:1},
+    {q:'Non-text website edits must go to the website team via which tool?', opts:['DeskPro','Notion','Basecamp','Email'], ans:2}
+  ],
+  4: [
+    {q:'What platform is GLM built on?', opts:['Salesforce','HubSpot','GoHighLevel','ActiveCampaign'], ans:2},
+    {q:'In GLM, leads moving through sales stages are tracked in which section?', opts:['Contacts','Conversations','Opportunities/Pipelines','Dashboard'], ans:2},
+    {q:'What is the name of the company-wide GLM test account?', opts:['Kilo Test','Kilo Fitness','GLM Demo','Success Team'], ans:1}
+  ],
+  5: [
+    {q:'In GMS what controls a member billing cycle and access?', opts:['Invoice','Package','Membership card','Contract'], ans:1},
+    {q:'What is the URL for the GMS training account?', opts:['app.usekilo.com','gms.usekilo.com','training.usekilo.com','app.kilo.com'], ans:0},
+    {q:'GMS is Kilo own software built for what stage of the client journey?', opts:['Lead capture','Website launch','After someone becomes a member','Onboarding calls'], ans:2}
+  ],
+  6: [
+    {q:'What three options does the mobile floating bar show on a Kilo website?', opts:['Home, About, Contact','Free Intro, Call, Directions','Book, Chat, Email','Sign Up, Login, Help'], ans:1},
+    {q:'Why does Kilo recommend Google Reviews over static testimonials?', opts:['They look better','They have credibility signals and are verifiable','They are easier to embed','They update automatically'], ans:1},
+    {q:'NAP stands for Name, Address, and what?', opts:['Number','Network','Phone','Notes'], ans:2}
+  ],
+  7: [
+    {q:'In GLM where does every lead conversation and interaction history live?', opts:['Opportunities','Dashboard','Contacts','Conversations'], ans:2},
+    {q:'What section in GLM handles SMS, email, and call threads with contacts?', opts:['Pipelines','Conversations','Automations','Calendar'], ans:1},
+    {q:'The Kilo Fitness GLM test account is available to whom?', opts:['Success team only','Website team only','Anyone with GLM login credentials','Managers only'], ans:2}
+  ],
+  8: [
+    {q:'What is the GMS Sales Portal?', opts:['A reporting dashboard','A way for gym owners to sell memberships online','A client communication tool','A payroll system'], ans:1},
+    {q:'In GMS invoices where do you look first when a member says they were charged incorrectly?', opts:['The dashboard','Their athlete profile and invoice history','The package settings','GMS notifications'], ans:1},
+    {q:'What is the difference between a Package and a Fee in GMS?', opts:['Packages are monthly, Fees are one-time','Packages are memberships, Fees are misc charges','Fees are for staff, Packages are for members','There is no difference'], ans:1}
+  ],
+  9: [
+    {q:'Which product receives a lead first when a prospect fills out a form on a Kilo website?', opts:['GMS','Websites backend','GLM','DeskPro'], ans:2},
+    {q:'GMS becomes the primary tool at which stage?', opts:['Lead capture','Appointment booking','Member onboarding and retention','Website launch'], ans:2},
+    {q:'What connects GLM and GMS so that new members flow between both platforms?', opts:['A Zapier integration','The Kilo integration built between the two products','A manual export','DeskPro triggers'], ans:1}
+  ],
+  10: [
+    {q:'How often does the average Kilo client contact support?', opts:['Every 3-5 days','Every 16-17 days','Once a month','Every 30-45 days'], ans:1},
+    {q:'What tab should you never use when editing WordPress content?', opts:['Text','HTML','Visual','Preview'], ans:2},
+    {q:'Where do you find the Kilo website training account credentials?', opts:['Notion','DeskPro','Basecamp','1Password'], ans:2}
+  ],
+  11: [
+    {q:'What types of website edits can the Success team make directly?', opts:['Any edit in wp-admin','Text-only changes','Image swaps and text','Layout and text changes'], ans:1},
+    {q:'Why do all non-text website edits go through Basecamp?', opts:['The team lead requires it','It creates a paper trail and ensures quality control','Success team lacks access','It is faster'], ans:1},
+    {q:'Blog posts on Kilo websites should always include what?', opts:['A video','A featured image','A contact form','A pricing table'], ans:1}
+  ],
+  12: [
+    {q:'In a GLM workflow what fires the sequence?', opts:['An action','A trigger','A condition','A timer'], ans:1},
+    {q:'What is one of the most common reasons a GLM automation email goes to spam?', opts:['Wrong contact name','Poor sender reputation or authentication','The automation fired too fast','The email was too long'], ans:1},
+    {q:'GLM AI Agents are found in which section of the Help Center?', opts:['Automations','Dashboard','AI Agents in GLM','Premium Features'], ans:2}
+  ],
+  13: [
+    {q:'What is the GMS Kiosk used for?', opts:['Billing','Member self check-in','Staff scheduling','Reporting'], ans:1},
+    {q:'In GMS what is different about an Event versus a regular Class?', opts:['Events are free, Classes are paid','Events are one-time or special, Classes are recurring','Events are for staff, Classes are for members','There is no difference'], ans:1},
+    {q:'Where in GMS do you configure automated messages to members about class reminders and billing?', opts:['Calendar','Notifications/Flows','Dashboard','Packages'], ans:1}
+  ],
+  14: [
+    {q:'A client says their leads are coming in but nobody gets the welcome text. What do you check first?', opts:['The website form','The workflow trigger and execution history','The client phone number','The GLM dashboard'], ans:1},
+    {q:'What realistically happens to SEO ranking in the first 30-90 days after switching to Kilo?', opts:['It improves immediately','It stays exactly the same','It may temporarily dip then recover','It drops permanently'], ans:2},
+    {q:'What is the correct way for a client to submit a website edit request?', opts:['Email the website team directly','Submit via Basecamp','Call their Success Manager','Use DeskPro'], ans:1}
+  ],
+  15: [
+    {q:'What is the primary learning goal of shadow day?', opts:['To practice product knowledge','To observe how real client conversations actually flow','To review help articles','To test your DeskPro skills'], ans:1},
+    {q:'Besides shadowing a live call, what else can you do on shadow day if no live call is available?', opts:['Read Notion docs','Review DeskPro tickets','Watch training videos','Build GLM workflows'], ans:1},
+    {q:'What should you write down before sitting in on a shadow call?', opts:['A list of products to review','Three specific things to watch for','Your questions for the team lead','A summary of the day content'], ans:1}
+  ],
+  16: [
+    {q:'Where in GLM do you find reporting on automation performance?', opts:['Dashboard only','Reporting in GLM section','The workflow execution history','Contacts tab'], ans:1},
+    {q:'What does the GLM mobile app allow gym owners to do on the go?', opts:['Build full automations','Check contacts and conversations','Run reports only','Edit their website'], ans:1},
+    {q:'A client says their booking link shows no available times even though the calendar looks open. What is the first thing you check?', opts:['The website link','Calendar availability settings and connected calendar','The client phone','The pipeline stage'], ans:1}
+  ],
+  17: [
+    {q:'Documents in GMS handle what?', opts:['Class schedules','Waivers and contracts','Member notes','Staff payroll'], ans:1},
+    {q:'What must a gym owner complete before the GMS payroll feature can be used?', opts:['Set up packages first','Connect their bank and configure staff profiles','Download the mobile app','Complete Stripe onboarding'], ans:1},
+    {q:'When a billing error is reported what is the first place you look in GMS?', opts:['The dashboard','Their athlete profile and invoice history','The package settings','The reporting tab'], ans:1}
+  ],
+  18: [
+    {q:'Why should clients avoid AI-generated or AI-edited images on their website?', opts:['They look low quality','Meta flags them as potentially untrustworthy on social media','They slow the site down','They violate copyright'], ans:1},
+    {q:'NAP on a Kilo website must always match what?', opts:['The DeskPro client record','Google Business Profile','The GLM contact record','The Basecamp project'], ans:1},
+    {q:'If a client asks why their site is not ranking on Google yet, what is the honest first thing you say?', opts:['Something must be broken','SEO takes time and rankings may temporarily dip after switching','Kilo has not done the SEO work yet','They need to pay for ads'], ans:1}
+  ],
+  19: [
+    {q:'During an assisted interaction what must you do before sending any response?', opts:['Send immediately to show confidence','Research, draft, and check with your team lead first','Ask the client to wait 24 hours','Copy a previous similar response'], ans:1},
+    {q:'What three tools should be open before your first assisted interaction?', opts:['Notion, YouTube, Google','DeskPro, GLM or GMS, Kilo Help Center','Email, Slack, Basecamp','Notion, Basecamp, DeskPro'], ans:1},
+    {q:'After your first assisted interaction, what is the most important next step?', opts:['Move on to the next ticket','Write up a debrief and share with your team lead','Update Notion','Email the client a follow-up'], ans:1}
+  ],
+  20: [
+    {q:'Phase 2 is called what?', opts:['Orientation and Exposure','Independence','Depth and Repetition','Building Confidence'], ans:2},
+    {q:'What is the key difference between Phase 1 and Phase 2 in terms of what is expected of you?', opts:['Phase 2 has more reading','Phase 2 has more independent work with less hand-holding','Phase 2 focuses only on GMS','Phase 2 is shorter'], ans:1},
+    {q:'What should you bring to your Phase 1 team lead review?', opts:['Just your questions','Your self-assessment, debrief notes, and running questions list','A list of clients you know','Your Day 1 notes only'], ans:1}
+  ],
+  21: [{q:'What is the rule for editing content in a Kilo WordPress site?', opts:['Use Visual tab','Use Text/HTML tab always','Use Elementor','Use the page preview'], ans:1},
+    {q:'What happens to unused pages on a Kilo website that are not in draft?', opts:['Nothing','Google indexes them and wastes crawl resources','They slow the site','They get deleted'], ans:1},
+    {q:'Show/hide sections in WordPress should be used instead of what?', opts:['Duplicating sections','Deleting sections','Moving sections','Renaming sections'], ans:1}
+  ],
+  22: [{q:'What does the GLM Social Planner do?', opts:['Manages member social profiles','Schedules and publishes social media posts','Tracks lead sources from social','Creates ad campaigns'], ans:1},
+    {q:'GLM funnels and forms live in which section?', opts:['Automations','Contacts','Sites','Opportunities'], ans:2},
+    {q:'Where do you find workflow execution history for a specific contact in GLM?', opts:['Dashboard','Their contact profile activity','The automation overview only','Reporting tab'], ans:1}
+  ],
+  23: [{q:'In GMS what separates a Staff profile from an Athlete profile?', opts:['Staff pay monthly fees','Staff can be assigned to classes and author posts','Staff get discounts','There is no functional difference'], ans:1},
+    {q:'What GMS access levels exist for staff?', opts:['Admin and Viewer only','Multiple levels controlling what each staff member can see and edit','Full and Limited only','Owner and Coach only'], ans:1},
+    {q:'Where do you find revenue and attendance data in GMS?', opts:['The Calendar','The Packages section','The Dashboard','DeskPro'], ans:2}
+  ],
+  24: [{q:'The GLM Premium upgrade unlocks what type of features?', opts:['More storage','AI capabilities and advanced tools','Extra calendar slots','Additional user seats'], ans:1},
+    {q:'What does the GLM Reputation Management feature help gym owners do?', opts:['Manage their social media','Request and display Google reviews','Handle client complaints','Track referrals'], ans:1},
+    {q:'The GMS Workout Tracker is designed primarily for which type of gym?', opts:['Yoga studios','Boot camps','CrossFit and performance-focused gyms','Personal training only'], ans:2}
+  ],
+  25: [{q:'What is the main focus of Week 5?', opts:['New content on products','Going deeper on advanced features of all three products','Independent client work','Scenario practice'], ans:1},
+    {q:'What does a 1-rated item on your self-assessment mean?', opts:['You are proficient','You need help with this area','You have mastered it','You have not tried it yet'], ans:1},
+    {q:'After Week 5 what should you bring to your team lead check-in?', opts:['Just your questions','Your self-assessment results and a specific ask for feedback','A client report','Your Day 1 notes'], ans:1}
+  ],
+  26: [{q:'Multi-product troubleshooting means the issue spans which products?', opts:['Only GLM and GMS','Any combination of Websites, GLM, and GMS','Only the website','Only GLM'], ans:1},
+    {q:'When starting a multi-product investigation what is the first thing you do?', opts:['Call the website team','Gather information from the client to understand which products are involved','Check the dashboard','Email support'], ans:1},
+    {q:'What tool do you use to route escalations to the website team?', opts:['DeskPro','Notion','Basecamp','Email'], ans:2}
+  ],
+  27: [{q:'What is the difference between acknowledging frustration and taking blame?', opts:['There is no difference','Acknowledging validates the feeling without admitting fault','Taking blame is always better','Acknowledging means agreeing Kilo failed'], ans:1},
+    {q:'When a client threatens to post publicly about an issue what should you do first?', opts:['Ignore it','Respond with urgency, acknowledge the issue, and escalate internally','Tell them not to post','Offer a refund immediately'], ans:1},
+    {q:'What is never an acceptable response to a frustrated client?', opts:['Asking clarifying questions','Getting defensive or dismissive','Acknowledging the frustration','Offering next steps'], ans:1}
+  ],
+  28: [{q:'Your escalation map should document what?', opts:['Client names and emails','Who handles each type of issue and what information they need','Your daily schedule','Your self-assessment scores'], ans:1},
+    {q:'When a client asks for something outside your scope what should you do?', opts:['Say no and end the conversation','Explain what you can offer instead without just saying no','Do it anyway','Transfer them to sales'], ans:1},
+    {q:'What is scope creep in a client success context?', opts:['A client growing their membership base','A client asking for work outside what the Success team handles','A billing issue','A website redesign request'], ans:1}
+  ],
+  29: [{q:'When a client says everything is broken at once, what is your first move?', opts:['Fix everything immediately','Slow the conversation down, listen fully, then triage in order of urgency','Escalate immediately','Ask them to send an email'], ans:1},
+    {q:'The inherited client scenario requires what tone above all else?', opts:['Defensive','Ownership without throwing the previous manager under the bus','Apologetic','Formal'], ans:1},
+    {q:'A client who has gone silent for six weeks with low GLM activity is likely what health status?', opts:['Green','Yellow','Red','Unknown'], ans:2}
+  ],
+  30: [{q:'What is the main goal of Week 6?', opts:['Learning new product features','Handling complex scenarios requiring judgment across all three products','Starting independent work','Gap filling'], ans:1},
+    {q:'What does escalation judgment mean?', opts:['Always escalating to be safe','Knowing in real time whether to handle something yourself or route it','Never escalating','Only escalating billing issues'], ans:1},
+    {q:'After Week 6 what should you be able to do that you could not do in Phase 1?', opts:['Read more help articles','Handle complex multi-product frustrated client situations with confidence','Build GLM automations from scratch','Redesign client websites'], ans:1}
+  ],
+  31: [{q:'What makes Day 31 different from Day 19?', opts:['The products are harder','You handle the interaction completely independently without pre-approval','You observe instead of doing','There are more tickets'], ans:1},
+    {q:'Your daily rhythm should be drafted by when?', opts:['End of Week 7','Day 31','End of Phase 2','Day 45'], ans:1},
+    {q:'After your first solo interaction what do you document?', opts:['Just the ticket number','Client, issue, resolution, time taken, confidence level, what you would do differently'], ans:1}
+  ],
+  32: [{q:'A client book entry should always include what?', opts:['Just the gym name','Name, products, last touchpoint, status, open items, and key notes'], ans:1},
+    {q:'Proactive beats reactive means what in practice?', opts:['You respond faster to tickets','You reach out before clients have problems','You handle more tickets per day','You escalate less'], ans:1},
+    {q:'What is the green/yellow/red health framework used to assess?', opts:['Product knowledge','The state of each client relationship in your book'], ans:1}
+  ],
+  33: [{q:'A natural trigger for proactive outreach is when a client has not had a touchpoint in how long?', opts:['3 days','7 days','30 or more days','90 days'], ans:2},
+    {q:'Good proactive outreach always references what?', opts:['A generic check-in template','Something specific to that client situation'], ans:1},
+    {q:'What channel is generally best for urgent proactive outreach to a client at risk?', opts:['Social media','Phone or direct email rather than DeskPro queue'], ans:1}
+  ],
+  34: [{q:'In DeskPro triage what gets handled first?', opts:['Oldest tickets','Most urgent issues like site down or billing errors','Easiest to answer','Newest tickets'], ans:1},
+    {q:'How long should a ticket sit waiting on a client before you follow up?', opts:['Never follow up','A reasonable timeframe based on urgency - typically 2-3 business days','Two weeks','One month'], ans:1},
+    {q:'What must always be logged before closing a resolved ticket?', opts:['Just the resolution','The issue, resolution, time taken, and any follow-up needed'], ans:1}
+  ],
+  35: [{q:'Your interaction log from Week 7 should contain what for every entry?', opts:['Just the client name','Client, issue, resolution, time taken, confidence level, what you would change'], ans:1},
+    {q:'The Week 7 team lead review is a checkpoint for what?', opts:['Checking product knowledge scores','Reviewing your first week of independent work and setting Week 8 focus'], ans:1},
+    {q:'By end of Week 7 you should have logged at least how many independent interactions?', opts:['2','5','8','15'], ans:2}
+  ],
+  36: [{q:'Gap Day 1 is structured around what four steps?', opts:['Read, watch, ask, practice','Go back to source, do something hands-on, write plain-language explanation, test yourself'], ans:1},
+    {q:'The most important of the four gap work steps is which?', opts:['Reading the source material','Doing something hands-on in the actual platform'], ans:1},
+    {q:'After Gap Day 1 you should send your team lead what?', opts:['Nothing','A short summary of your top gaps, what you did, and what still needs work'], ans:1}
+  ],
+  37: [{q:'If reading and hands-on practice are not closing a gap after two days what should you do?', opts:['Keep reading','Ask your team lead to walk you through it directly'], ans:1},
+    {q:'Gap Day 2 includes preparation for what the following day?', opts:['A team meeting','The final complex scenario day'], ans:1},
+    {q:'Redoing a hard scenario from Days 26-29 without looking at your previous answer tests what?', opts:['Your memory','How your thinking has evolved and what you actually retained'], ans:1}
+  ],
+  38: [{q:'The final complex scenario day is designed to be what?', opts:['Easy and confidence building','The hardest practice of the program - designed to push you to your limit'], ans:1},
+    {q:'Scenario 1 on Day 38 involves a client whose website form has been broken for two weeks. What is the first thing you write?', opts:['An investigation report','The actual first response you would send to the client within 30 minutes'], ans:1},
+    {q:'The inherited client scenario requires you to write what at the end?', opts:['A product knowledge summary','The follow-up email you would send after your first call'], ans:1}
+  ],
+  39: [{q:'What is the one-thing rule for feedback?', opts:['Give one compliment and one criticism','If you could only say one thing, say the most important thing - not a list of everything'], ans:1},
+    {q:'Good feedback is specific meaning what?', opts:['It is long and detailed','It names exactly what worked or did not and why - not just good tone or unclear'], ans:1},
+    {q:'Peer review teaches you as much about your own work as it does about your teammate because of what?', opts:['You get to judge others','Articulating what good looks like sharpens your own instincts'], ans:1}
+  ],
+  40: [{q:'Phase 3 Independence means operating with how much oversight?', opts:['Full team lead oversight','Minimal oversight - you own your book and your outcomes'], ans:1},
+    {q:'What does a Phase 2 wrap-up team lead review formally assess?', opts:['Your product knowledge test scores only','Your readiness to carry a full client load in Phase 3'], ans:1},
+    {q:'After Phase 2 you should be able to handle what percentage of client interactions independently?', opts:['25%','50%','The majority','All of them'], ans:2}
+  ],
+  41: [{q:'What is a client book?', opts:['A help article collection','Your full list of assigned clients with status, history, and key notes for each'], ans:1},
+    {q:'Client book entries should be uniform across the team so that what is possible?', opts:['Everyone uses the same font','Anyone can pick up another persons book and understand the situation immediately'], ans:1},
+    {q:'After the full handover your first priority is what?', opts:['Reading all the help articles again','Working through any urgent items that surfaced during the handover conversation'], ans:1}
+  ],
+  42: [{q:'A green client means what?', opts:['They are a new client','They are active, engaged, getting results, and have no open issues'], ans:1},
+    {q:'A red client means what?', opts:['They have a billing issue','Low activity, declining engagement, no recent touchpoint, or known dissatisfaction'], ans:1},
+    {q:'After the health assessment what should you build before taking any action?', opts:['A report for Kaleda','A weekly action plan prioritizing red clients first'], ans:1}
+  ],
+  43: [{q:'Proactive outreach at scale means reaching which clients this week?', opts:['Only red clients','Every client who needs a touchpoint based on your health assessment and action plan'], ans:1},
+    {q:'What must every proactive message reference to avoid feeling like a template?', opts:['The Kilo product they use','Something specific to that client situation or account'], ans:1},
+    {q:'Proactive work should complement reactive work not compete with it - what does that mean in practice?', opts:['Do proactive work only on Fridays','Build proactive outreach into your daily rhythm alongside DeskPro triage'], ans:1}
+  ],
+  44: [{q:'An independent work day in Phase 3 means what?', opts:['No client work','You run your full daily rhythm with no prescribed tasks - just the job'], ans:1},
+    {q:'The end of day reflection on independent work days asks you to do what?', opts:['File a report to your team lead','Answer structured questions about what was hard, what went well, and what to improve tomorrow'], ans:1},
+    {q:'On an independent work day you should also do what beyond client work?', opts:['Nothing extra','Contribute to the team in at least one way'], ans:1}
+  ],
+  45: [{q:'Week 9 wrap-up reviews what main thing?', opts:['Product knowledge quiz scores','Your first full week of client ownership - health, rhythm, and interaction quality'], ans:1},
+    {q:'Your updated client health summary for the team lead should show what?', opts:['Just the red clients','How many are green, yellow, and red and whether anything changed this week'], ans:1},
+    {q:'The interaction log review looks at patterns meaning what?', opts:['Just counting tickets closed','What types of issues came up most, your quality level, and where to improve'], ans:1}
+  ],
+  46: [{q:'Knowing a client is on your book versus knowing their business means what practically?', opts:['Knowing their name versus knowing their revenue','Having their contact info versus understanding their gym type, goals, history, and challenges'], ans:1},
+    {q:'Client research should include looking at what sources?', opts:['Just DeskPro tickets','Their Kilo product activity, their interaction history, and their public gym presence'], ans:1},
+    {q:'Why does understanding a client business make every interaction better?', opts:['It makes you look smart','It lets you be specific and relevant instead of generic'], ans:1}
+  ],
+  47: [{q:'A check-in call done well feels like what?', opts:['A formal review','Catching up with someone who genuinely cares about their business'], ans:1},
+    {q:'Your follow-up email after a check-in should be how long?', opts:['One full page of notes','Three to five sentences maximum covering action items and anything promised'], ans:1},
+    {q:'Before a check-in call you should always review what?', opts:['The help articles for that product','The client history, open items, and anything they mentioned about their goals previously'], ans:1}
+  ],
+  48: [{q:'A growth opportunity conversation differs from a sales pitch in what key way?', opts:['You use different words','It starts with an observation specific to their situation, not a generic product push'], ans:1},
+    {q:'Which signal suggests a client might benefit from GMS if they do not already have it?', opts:['They have a busy website','They mention managing member payments manually in a spreadsheet'], ans:1},
+    {q:'Before recommending GMS to a GLM-only client what should you always do first?', opts:['Send them the pricing page','Ask a question to confirm the problem is real before making any recommendation'], ans:1}
+  ],
+  49: [{q:'If you did not act on a growth opportunity this week what is the most honest reason to examine?', opts:['There were no opportunities','Reactive work crowded it out or you were not sure how to open the conversation'], ans:1},
+    {q:'A client book that is starting to slip means what specifically?', opts:['You have too many clients','Entries are not being updated, touchpoints are being missed, or health ratings are stale'], ans:1},
+    {q:'The Week 10 check-in should include what update?', opts:['Just a verbal summary','An updated health summary and a specific growth opportunity status update'], ans:1}
+  ],
+  50: [{q:'Deepening a client relationship means going beyond reactive support to what?', opts:['Sending more emails','Understanding their business enough to be genuinely useful before they ask'], ans:1},
+    {q:'If a client moved from yellow to green this week because of your proactive work what should you note?', opts:['Nothing extra','What specifically you did that caused the improvement so you can repeat it'], ans:1},
+    {q:'Week 10 wrap-up is described as a milestone because it is what?', opts:['The end of Phase 3','Halfway through Phase 3 and two thirds through the entire program'], ans:1}
+  ],
+  51: [{q:'A knowledge share is worth creating when what is true?', opts:['You have an hour to spare','You learned something that was not written down anywhere and would help the whole team'], ans:1},
+    {q:'A good knowledge share document should be what?', opts:['Long and comprehensive','Short enough to actually be read and specific enough to be immediately usable'], ans:1},
+    {q:'After creating your knowledge share what do you do with it?', opts:['Keep it in your personal Notion','Share with your team lead and add to the team Notion space if appropriate'], ans:1}
+  ],
+  52: [{q:'Supporting a newer team member means what approach?', opts:['Teaching them everything you know in one session','Let them drive and ask questions - your job is to support not lecture'], ans:1},
+    {q:'Teaching someone else reveals what about your own knowledge?', opts:['Nothing new','Where you can explain things clearly versus where you only thought you understood'], ans:1},
+    {q:'The mentoring session is valuable for the mentor because of what principle?', opts:['You get credit for helping','You cannot explain something clearly unless you actually understand it'], ans:1}
+  ],
+  53: [{q:'A process improvement suggestion should identify what four things?', opts:['The person to blame, the fix, the cost, and the timeline','The friction, why it matters, what you would change, and what it would take to implement'], ans:1},
+    {q:'Where should you look for friction to improve?', opts:['Only your own workflow','Internal processes, client experience, and the onboarding program itself'], ans:1},
+    {q:'Presenting a process improvement to your team lead is not about being right - it is about what?', opts:['Proving you are smarter','Contributing constructively and being open to pushback'], ans:1}
+  ],
+  54: [{q:'Contributing beyond your own client work in Phase 3 means what specifically?', opts:['Handling more tickets','Helping a teammate, flagging something to improve, or sharing knowledge proactively'], ans:1},
+    {q:'Which habit from the program is most important to carry forward permanently?', opts:['Daily reflection and end of day review','Reading all help articles weekly'], ans:0},
+    {q:'An independent work day in Week 11 should feel different from Week 9 in what way?', opts:['It should be easier because you have fewer clients','You are not just doing the job - you are actively contributing to the team around you'], ans:1}
+  ],
+  55: [{q:'The Week 11 looking back exercise asks you to compare what?', opts:['Phase 1 and Phase 2 scores','Who you were on Day 1 to who you are now'], ans:1},
+    {q:'What should you bring to the Week 11 team lead check-in that is different from previous weeks?', opts:['Just your client book update','A preview of what you want to accomplish in your final week'], ans:1},
+    {q:'Contributing back in Week 11 builds what skill beyond client success?', opts:['Technical product knowledge','Leadership - making the team and program better for those who come after you'], ans:1}
+  ],
+  56: [{q:'The final self-assessment covers how many areas?', opts:['3','6','More than 15 across products, communication, independence, and self-awareness'], ans:2},
+    {q:'Comparing your Day 20 assessment to Day 56 shows what?', opts:['How many tickets you closed','Your growth across the full program and where gaps still exist'], ans:1},
+    {q:'Any item still rated 1 on Day 56 requires what?', opts:['Ignoring it','A specific post-graduation plan to close that gap'], ans:1}
+  ],
+  57: [{q:'The program retrospective asks you to evaluate all three phases. What do you assess for each one?', opts:['What you liked and disliked','What was most valuable, what could be cut, whether pacing was right, and what was missing'], ans:1},
+    {q:'Your retrospective is useful because it does what for future team members?', opts:['Nothing','Directly improves the program they will go through'], ans:1},
+    {q:'The retrospective asks you to be honest not diplomatic - what does that mean in practice?', opts:['Say whatever you want','Give real feedback about what did not work even if it feels uncomfortable'], ans:1}
+  ],
+  58: [{q:'The final independent work day is a preview of what?', opts:['The graduation ceremony','Every day after this program ends - no scaffolding, just the job'], ans:1},
+    {q:'The final end of day reflection asks you what that no previous reflection has asked?', opts:['Your product scores','What kind of Success Manager you want to be six months from now and what you need to do next week to get there'], ans:1},
+    {q:'Is there anything different about how you should approach client work on Day 58 compared to Day 44?', opts:['No it is the same','You are now contributing to the team not just doing your own work'], ans:1}
+  ],
+  59: [{q:'The team lead feedback session is a formal what?', opts:['Performance review that affects your contract','A developmental conversation covering growth, strengths, development areas, and readiness'], ans:1},
+    {q:'The peer feedback session focuses on what?', opts:['Product knowledge only','How you come across in real interactions from a teammate perspective'], ans:1},
+    {q:'Before your feedback sessions you should prepare what?', opts:['Nothing - just listen','Three to four specific questions you want answered including what they may have held back'], ans:1}
+  ],
+  60: [{q:'The graduation conversation with your team lead is a handover from what to what?', opts:['Phase 2 to Phase 3','The program to your full ongoing role on the team'], ans:1},
+    {q:'Your 30-day post-graduation commitment should cover what three areas?', opts:['Products, tickets, and calls','A specific gap to close, a client relationship to invest in, and a team contribution to make'], ans:1},
+    {q:'The program retrospective you wrote on Day 57 benefits whom most directly?', opts:['Just your team leads','The next person who goes through this program'], ans:1}
+  ]
+};
+
 var CHECKS = {
   1: [
-    {q:'What are the three Kilo products and how do they work together across the client lifecycle?', type:'open'},
     {q:'Which tool is the client-facing inbox for support tickets at Kilo?', opts:['Help Scout','DeskPro','Basecamp','Notion'], ans:1},
     {q:'What does Success team proficiency mean at Kilo - what are the three things a team member needs to be able to do?', type:'open'}
   ],
@@ -792,7 +1054,7 @@ function triggerPreCheck() {
     addCoachMsg('You already passed the pre-check for Day ' + day + '. You are cleared to move on. Hit Mark complete when done.');
     return;
   }
-  var checks = getChecks(day).slice(0, 3);
+  var checks = PRE_CHECKS[day] ? PRE_CHECKS[day].slice(0, 3) : DEFAULT_CHECKS.slice(0, 3);
   currentQuiz = checks;
   quizIndex = 0;
   quizScore = 0;
