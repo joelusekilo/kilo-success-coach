@@ -240,34 +240,304 @@ var DAYS = {
 
 var CHECKS = {
   1: [
-    {q:'What are the three Kilo products and how do they relate to each other?', type:'open'},
-    {q:'What is one key characteristic of Kilo clients that should shape every interaction?', type:'open'},
-    {q:'Which tool is the client-facing inbox for support tickets?', opts:['Help Scout','DeskPro','Basecamp','Notion'], ans:1}
+    {q:'What are the three Kilo products and how do they work together across the client lifecycle?', type:'open'},
+    {q:'Which tool is the client-facing inbox for support tickets at Kilo?', opts:['Help Scout','DeskPro','Basecamp','Notion'], ans:1},
+    {q:'What does Success team proficiency mean at Kilo - what are the three things a team member needs to be able to do?', type:'open'}
+  ],
+  2: [
+    {q:'Complete this sentence: The Website attracts, GLM _______, GMS _______.',  opts:['converts / retains','retains / converts','onboards / converts','tracks / manages'], ans:0},
+    {q:'Where do you find the login credentials for a client website backend?', opts:['Notion','DeskPro','Basecamp - Docs and Files','1Password'], ans:2},
+    {q:'What is the URL for the Kilo GMS training account and what email do you use to log in?', type:'open'}
   ],
   3: [
-    {q:'When editing content on a Kilo website, which tab should you always use?', opts:['Visual tab','Text/HTML tab','Preview tab','Draft tab'], ans:1},
-    {q:'What does NAP stand for and why does it matter for SEO?', type:'open'},
-    {q:'A client asks you to update their address on their website on a call. What do you do?', opts:['Update it directly in wp-admin','Route it to website team via Basecamp','Tell them to do it themselves','Update it then email the website team'], ans:1}
+    {q:'When editing content in a Kilo WordPress site, which tab must you always use?', opts:['Visual tab','Text/HTML tab','Preview tab','Elementor'], ans:1},
+    {q:'What are the two main types of Kilo website templates and what is the key difference between them?', type:'open'},
+    {q:'A client asks you to update their phone number on their website while you are on a call. What do you do?', opts:['Update it directly in wp-admin','Route it to the website team via Basecamp','Tell them to do it themselves','Update it then notify the website team'], ans:1}
+  ],
+  4: [
+    {q:'What platform is GLM built on?', opts:['Salesforce','HubSpot','GoHighLevel','ActiveCampaign'], ans:2},
+    {q:'In GLM what is the difference between a Contact and an Opportunity?', type:'open'},
+    {q:'What is a Pipeline in GLM and what does it show a gym owner?', type:'open'}
   ],
   5: [
-    {q:'What is a Package in GMS and what does it control?', type:'open'},
-    {q:'Where would you find a member payment history in GMS?', opts:['The calendar','Their athlete profile','The dashboard only','The packages section'], ans:1},
-    {q:'How do GLM and GMS connect to each other?', type:'open'}
+    {q:'What is a Package in GMS and what does it control for a member?', type:'open'},
+    {q:'Where do you find a member payment history in GMS?', opts:['The dashboard','Their athlete profile','The billing tab only','The packages section'], ans:1},
+    {q:'GMS handles everything after someone becomes a member. Name three things it manages.', type:'open'}
+  ],
+  6: [
+    {q:'On a Kilo client website what should always be enabled on mobile and what three options does it show?', type:'open'},
+    {q:'Why does Kilo recommend Google Reviews embeds over static written testimonials?', type:'open'},
+    {q:'What does NAP stand for and why must it match the Google Business Profile exactly?', type:'open'}
+  ],
+  7: [
+    {q:'In GLM where does every lead, client conversation, and interaction history live?', opts:['Opportunities','Contacts','Conversations','Pipelines'], ans:1},
+    {q:'What is the Conversations section in GLM used for?', type:'open'},
+    {q:'If a gym owner says a lead stopped responding after booking a call, where in GLM would you look first?', type:'open'}
+  ],
+  8: [
+    {q:'In GMS what is the difference between a Package and a Fee?', type:'open'},
+    {q:'What does the GMS Sales Portal allow gym owners to do?', type:'open'},
+    {q:'A gym owner says a member was charged the wrong amount. Walk through the first two places you check in GMS.', type:'open'}
   ],
   9: [
     {q:'A prospect fills out a form on a Kilo website. Which product receives that lead first?', opts:['GMS','GLM','Websites backend','DeskPro'], ans:1},
-    {q:'At which stage does GMS become the primary tool?', opts:['Lead capture','Appointment booking','Member onboarding and retention','Website launch'], ans:2},
+    {q:'At which stage of the client lifecycle does GMS become the primary tool?', opts:['Lead capture','Appointment booking','Member onboarding and retention','Website launch'], ans:2},
     {q:'If a new member signs up in GMS but does not appear in GLM, what is the most likely cause?', type:'open'}
   ],
+  10: [
+    {q:'Name the three-point proficiency definition for a Kilo Success team member.', type:'open'},
+    {q:'After two weeks in the program, which of the three products feels most natural to you and which feels most foreign?', type:'open'},
+    {q:'What is the correct escalation path when a client has a website issue you cannot resolve yourself?', type:'open'}
+  ],
+  11: [
+    {q:'What types of website changes can a Success team member make directly versus what must go to the website team via Basecamp?', type:'open'},
+    {q:'Why must all non-text website edits be routed through Basecamp rather than done directly?', opts:['The website team is faster','It creates accountability and a paper trail','Success team does not have access','Clients prefer it'], ans:1},
+    {q:'A client wants their About page hero image swapped for a new photo. What do you do?', type:'open'}
+  ],
+  12: [
+    {q:'In a GLM workflow what is the difference between a trigger and an action?', type:'open'},
+    {q:'A gym owner says two new leads came in yesterday but neither got the welcome text. What are the first three things you check?', type:'open'},
+    {q:'What are GLM AI Agents and what is one limitation they have?', type:'open'}
+  ],
+  13: [
+    {q:'A gym owner says one of their classes is showing up twice on Tuesday and their 7am is missing. What do you check first in GMS?', type:'open'},
+    {q:'What is the difference between a Class and an Event in GMS?', type:'open'},
+    {q:'What is the GMS Kiosk feature and how does a member use it?', type:'open'}
+  ],
   14: [
-    {q:'A client says their leads stopped getting the automated welcome text. What are the first two things you check?', type:'open'},
-    {q:'What is the correct process for a client to request a website edit?', type:'open'},
-    {q:'A member says they were charged twice this month. Where do you look first in GMS?', opts:['The dashboard','Their athlete profile and invoice history','The package settings only','GMS notifications'], ans:1}
+    {q:'A client says their leads are coming in but nobody is getting the automatic text. What are the first two things you check?', type:'open'},
+    {q:'A member says they were charged twice this month. Where do you look first in GMS?', opts:['The dashboard','Their athlete profile and invoice history','The package settings only','GMS notifications'], ans:1},
+    {q:'A client asks why their website is not showing up on Google after switching to Kilo. What is the honest answer?', type:'open'}
+  ],
+  15: [
+    {q:'What are three things you should watch for when shadowing a client call that you would not notice in a help article?', type:'open'},
+    {q:'When reviewing DeskPro tickets what two things should you note beyond just the issue and resolution?', type:'open'},
+    {q:'After a shadow day what is the most important thing to do before your next 1:1?', type:'open'}
+  ],
+  16: [
+    {q:'A client says leads cannot find any available times on their booking link even though the calendar is open all week. What do you check?', type:'open'},
+    {q:'Where in GLM can you find reporting on whether automations are working?', type:'open'},
+    {q:'What is the GLM mobile app primarily used for by gym owners?', type:'open'}
+  ],
+  17: [
+    {q:'A gym owner says a long-time member was charged 200 dollars instead of her usual 150. Walk through your investigation steps.', type:'open'},
+    {q:'What do Documents in GMS handle and how do they attach to memberships?', type:'open'},
+    {q:'What is the GMS payroll feature and what does a gym owner need to set up before using it?', type:'open'}
+  ],
+  18: [
+    {q:'Why should clients avoid using AI-generated or AI-edited images on their Kilo website?', type:'open'},
+    {q:'What realistically happens to a site SEO ranking in the first 30 to 90 days after switching to Kilo?', type:'open'},
+    {q:'A client says their old website ranked better than their new Kilo site. What is the honest response and what can you offer?', type:'open'}
+  ],
+  19: [
+    {q:'Before your first independent assisted interaction what three tools should you have open and ready?', type:'open'},
+    {q:'What is the correct process for handling a client ticket when you are doing an assisted interaction for the first time?', opts:['Draft a response and send it immediately','Research, draft, review with team lead, then send','Ask the team lead to write it and you observe','Send a quick acknowledgment then research'], ans:1},
+    {q:'After your first assisted interaction what is the most important thing to do in the next 30 minutes?', type:'open'}
   ],
   20: [
-    {q:'Name the three-point proficiency definition for a Success team member.', type:'open'},
-    {q:'What is the difference between an editable and a concierge Kilo website template?', type:'open'},
-    {q:'Why must you always use the Text tab instead of the Visual tab when editing WordPress content?', type:'open'}
+    {q:'Name the three-point proficiency definition for a Kilo Success Manager.', type:'open'},
+    {q:'What is the difference between an editable and a concierge Kilo website template from the client perspective?', type:'open'},
+    {q:'Why must you always use the Text/HTML tab instead of the Visual tab when editing content in a Kilo WordPress site?', type:'open'}
+  ],
+  21: [
+    {q:'What is the single most important rule when editing content in any Kilo WordPress site and why does it matter?', type:'open'},
+    {q:'A client redesigned their site six weeks ago and their Google ranking dropped significantly. How do you handle this conversation?', type:'open'},
+    {q:'A client wants to add a members-only login page to their Kilo website. Is this possible? How do you respond?', type:'open'}
+  ],
+  22: [
+    {q:'Where in GLM can you see the execution history showing which contacts triggered a workflow and when?', type:'open'},
+    {q:'What does the GLM Social Planner do and what is one common limitation clients run into with it?', type:'open'},
+    {q:'A client says their GLM form is getting submissions but leads are not showing up in Contacts. What do you check?', type:'open'}
+  ],
+  23: [
+    {q:'If a gym owner says they have two profiles for the same member in GMS, how do you handle that?', type:'open'},
+    {q:'What is the difference between a Staff profile and an Athlete profile in GMS and why does it matter for scheduling?', type:'open'},
+    {q:'A gym owner says revenue is down this month but they have not lost any members. What GMS dashboard data do you look at?', type:'open'}
+  ],
+  24: [
+    {q:'What features does the GLM Premium upgrade add that the standard plan does not include?', type:'open'},
+    {q:'What is the GLM Reputation Management feature and how would you pitch it to a gym owner trying to get more Google reviews?', type:'open'},
+    {q:'What is the GMS Workout Tracker and which type of gym is it designed for?', type:'open'}
+  ],
+  25: [
+    {q:'After five weeks what product area are you still least confident in at the advanced level and what is your specific plan to close that gap?', type:'open'},
+    {q:'What does the GLM Premium upgrade include and how would you explain the value to a gym owner on the fence?', type:'open'},
+    {q:'What are the first things you check when a gym owner says their GMS and GLM are not syncing?', type:'open'}
+  ],
+  26: [
+    {q:'A gym owner ran a Facebook ad, got 40 clicks but only 3 new GLM contacts, and none got the welcome text. Walk through your full investigation across all three products.', type:'open'},
+    {q:'A new member signed up through the GMS Sales Portal, paid, and has a receipt but is not in GLM and never got the welcome sequence. What is the most likely cause and how do you fix it?', type:'open'},
+    {q:'Someone booked a free intro through the website, got a confirmation, showed up - but nothing was in the GLM calendar and no notification went out. Walk through what went wrong.', type:'open'}
+  ],
+  27: [
+    {q:'What is the difference between acknowledging client frustration and agreeing that Kilo is at fault - and why does that distinction matter?', type:'open'},
+    {q:'A client threatens to post in the Facebook group about broken automations failing for three days. How do you respond immediately?', type:'open'},
+    {q:'A client says they were told Kilo would help them grow their gym but they have not gotten a single new member in three months and want a refund. What do you acknowledge, what is the honest answer, what do you offer?', type:'open'}
+  ],
+  28: [
+    {q:'Who handles each of these: a website layout issue, a GLM technical bug that is not user error, a GMS billing error needing backend access?', type:'open'},
+    {q:'A client asks you to pull a report of every member who attended fewer than 4 classes in the last 30 days. Is this possible in GMS? If not, what do you offer instead?', type:'open'},
+    {q:'A client asks you to build their entire GLM automation sequence, write all the copy, and train their staff - all in one week. How do you respond without just saying no?', type:'open'}
+  ],
+  29: [
+    {q:'A gym owner messages Monday morning: website form broken for two weeks, 47 contacts with no follow-up, three failed payments over the weekend. How do you open this and triage the three issues?', type:'open'},
+    {q:'A client who has been with Kilo 14 months has stopped responding for six weeks and shows low GLM activity. What does this tell you and what is your outreach strategy?', type:'open'},
+    {q:'You are taking over a client book from someone who left. On your first call the client says automations have not been touched in six months and they feel like Kilo has been collecting money without delivering value. How do you open this call?', type:'open'}
+  ],
+  30: [
+    {q:'After Week 6 which type of scenario is still hardest for you - multi-product issues, frustrated clients, or edge cases - and why?', type:'open'},
+    {q:'What is your personal escalation framework - name the specific situations where you escalate versus handle yourself?', type:'open'},
+    {q:'How do you communicate with a client while a multi-product issue is still being investigated and you do not have an answer yet?', type:'open'}
+  ],
+  31: [
+    {q:'Before your first fully independent interaction what three things must you prepare?', type:'open'},
+    {q:'What makes a first independent interaction different from an assisted one?', opts:['You skip the research step','You send without checking with a team lead first','You only handle simple tickets','You ask the client to wait'], ans:1},
+    {q:'After your first solo interaction what should you document and share with your team lead?', type:'open'}
+  ],
+  32: [
+    {q:'What is a client book and what information should every entry contain?', type:'open'},
+    {q:'What signals would tell you a client might be struggling before they reach out to you?', type:'open'},
+    {q:'What is the difference between proactive client success work and reactive support work?', type:'open'}
+  ],
+  33: [
+    {q:'Name three specific triggers that should prompt you to proactively reach out to a client without them contacting you first.', type:'open'},
+    {q:'What are the rules for proactive outreach that make it feel genuine rather than scripted?', type:'open'},
+    {q:'Write a one sentence opening for a proactive outreach to a client whose GLM calendar has had no bookings in three weeks.', type:'open'}
+  ],
+  34: [
+    {q:'You open DeskPro Monday morning and find: a website down since Friday, a billing complaint, an upsell inquiry, a frustrated automation message, and three replies to proactive outreach. In what order do you handle these and why?', type:'open'},
+    {q:'How long do you wait before following up on a ticket where you are waiting on the client to respond?', type:'open'},
+    {q:'What information should always be logged before you close a resolved ticket?', type:'open'}
+  ],
+  35: [
+    {q:'After your first full week of independent work what type of issues came up most and which interactions went smoothest?', type:'open'},
+    {q:'Is your daily rhythm working - what specifically would you change about how you structure your day?', type:'open'},
+    {q:'What is the one interaction from this week you would handle completely differently and why?', type:'open'}
+  ],
+  36: [
+    {q:'Looking across all your self-assessments, what is your single most important gap and what specific action are you taking today to close it?', type:'open'},
+    {q:'What is the four-step process for targeted gap work and why does the doing step matter more than just re-reading?', type:'open'},
+    {q:'If you could only fix one gap before Phase 3 begins, which one would have the biggest impact on your client work?', type:'open'}
+  ],
+  37: [
+    {q:'After two days of targeted gap work, is the gap actually closing or are you still stuck? What does that tell you about how you need to approach it differently?', type:'open'},
+    {q:'Pick the hardest scenario from Days 26-29 and redo it from memory. What changed in your thinking compared to your first attempt?', type:'open'},
+    {q:'What is the one thing you most want to strengthen before your final complex scenario day tomorrow?', type:'open'}
+  ],
+  38: [
+    {q:'A gym owner messages Monday morning: website form broken two weeks, 47 contacts with no follow-up, three failed payments over weekend. Write the actual first response you would send within 30 minutes.', type:'open'},
+    {q:'A client who has been silent for six weeks has low GLM activity and no watch list flag yet. Write the actual outreach message you would send today.', type:'open'},
+    {q:'You are inheriting a client who feels Kilo has not delivered value and the previous manager left no handover notes. Write the follow-up email you would send after your first call.', type:'open'}
+  ],
+  39: [
+    {q:'What makes feedback specific and useful versus vague and unhelpful - give a concrete example of each?', type:'open'},
+    {q:'After reviewing a teammate interaction today, what did you notice about your own work by comparison?', type:'open'},
+    {q:'What is the one-thing rule for feedback and why is it more effective than listing everything you noticed?', type:'open'}
+  ],
+  40: [
+    {q:'Are you ready to carry a full client load in Phase 3 - be honest about what you are still not confident in?', type:'open'},
+    {q:'What does Phase 3 independence mean in practice - what changes about how you operate compared to Phase 2?', type:'open'},
+    {q:'What is the one piece of feedback from your team lead this week that you are committing to act on immediately?', type:'open'}
+  ],
+  41: [
+    {q:'What information should every entry in your client book contain and why does each field matter?', type:'open'},
+    {q:'What are your Phase 3 intentions - what kind of Success Manager do you want to be by Day 60?', type:'open'},
+    {q:'After your full client book handover, which client are you most concerned about and what is your first move?', type:'open'}
+  ],
+  42: [
+    {q:'Describe the green, yellow, and red client health framework and what specific signals put a client in each category?', type:'open'},
+    {q:'How many clients in your book are currently green, yellow, and red?', type:'open'},
+    {q:'What is the single highest-impact action you can take this week based on your health assessment?', type:'open'}
+  ],
+  43: [
+    {q:'What is the difference between proactive outreach that feels genuine and outreach that feels like a template - give a specific example of each?', type:'open'},
+    {q:'How are you balancing proactive outreach with reactive DeskPro work this week - what is your system?', type:'open'},
+    {q:'Which proactive outreach you sent this week got the best response and why do you think it landed?', type:'open'}
+  ],
+  44: [
+    {q:'Walk through your daily rhythm - what do you do first, midday, and end of day and why in that order?', type:'open'},
+    {q:'What is the hardest thing you dealt with today and how did you handle it?', type:'open'},
+    {q:'What is one thing you want to do better tomorrow based on how today went?', type:'open'}
+  ],
+  45: [
+    {q:'After your first full week of Phase 3, has your client book health improved, stayed the same, or gotten worse - and what drove that?', type:'open'},
+    {q:'Where did your product knowledge hold up under real-world pressure this week and where did it let you down?', type:'open'},
+    {q:'What is the interaction from this week you are most proud of and what made it work?', type:'open'}
+  ],
+  46: [
+    {q:'After researching your clients this week, what surprised you most about a situation you did not know before?', type:'open'},
+    {q:'What is the difference between knowing a client is on your book and actually knowing their business?', type:'open'},
+    {q:'Which client in your book are you most worried about based on your research and what is your specific plan?', type:'open'}
+  ],
+  47: [
+    {q:'What is the difference between a check-in call done well and one that feels like a box-checking exercise?', type:'open'},
+    {q:'Walk through your preparation process for a check-in call - what do you review and what do you write down beforehand?', type:'open'},
+    {q:'What should a follow-up email after a check-in call contain and how long should it be?', type:'open'}
+  ],
+  48: [
+    {q:'What signals in a client account tell you there is a growth opportunity worth raising - name three specific ones?', type:'open'},
+    {q:'How do you open a growth opportunity conversation without it feeling like a sales pitch?', type:'open'},
+    {q:'A client who has Websites and GLM mentions they are manually tracking member payments in a spreadsheet. How do you handle this moment?', type:'open'}
+  ],
+  49: [
+    {q:'Did you act on a growth opportunity this week - if yes, how did it go, if no, what stopped you?', type:'open'},
+    {q:'Is your client book staying current or starting to slip - what specifically is falling behind?', type:'open'},
+    {q:'What is the one thing from this week you want to bring to your team lead check-in tomorrow?', type:'open'}
+  ],
+  50: [
+    {q:'Has your understanding of your clients businesses deepened over the last two weeks - give a specific example?', type:'open'},
+    {q:'Did any clients move between health categories this week because of proactive work you did - what did you do?', type:'open'},
+    {q:'Which client relationship are you most proud of right now and what have you done to build it?', type:'open'}
+  ],
+  51: [
+    {q:'What is the one thing you learned during this program that was not written down anywhere and is now worth documenting for the team?', type:'open'},
+    {q:'What format makes a knowledge share actually useful - what criteria make something the team will actually read and use?', type:'open'},
+    {q:'Who on the team is most likely to benefit from what you documented today and how would you share it with them?', type:'open'}
+  ],
+  52: [
+    {q:'After your mentoring session, what did you realize you know really well versus what you thought you knew but struggled to explain?', type:'open'},
+    {q:'What is the difference between supporting a newer team member and lecturing them - how did you stay on the right side of that?', type:'open'},
+    {q:'What is one thing you would do differently if you were back at Day 1 based on what you learned from mentoring today?', type:'open'}
+  ],
+  53: [
+    {q:'What friction point did you identify and why did you pick it over the others you considered?', type:'open'},
+    {q:'Walk through your process improvement suggestion - what is the problem, why it matters, what you would change, and what it would take?', type:'open'},
+    {q:'How did your team lead respond to your suggestion and what did you learn from that conversation?', type:'open'}
+  ],
+  54: [
+    {q:'What did you contribute today beyond your own client work and what impact did it have?', type:'open'},
+    {q:'Which habit from this program do you most want to keep as a permanent practice going forward?', type:'open'},
+    {q:'What is the one thing you most want to leave behind when this program ends?', type:'open'}
+  ],
+  55: [
+    {q:'What did you learn about yourself this week from the knowledge sharing, mentoring, and process improvement exercises?', type:'open'},
+    {q:'Go back and read your Day 1 checklist. What could you not do then that you can do confidently now?', type:'open'},
+    {q:'What do you still want to accomplish in your final week before this program ends?', type:'open'}
+  ],
+  56: [
+    {q:'Across the full program which product area grew the most and which still needs work after graduation?', type:'open'},
+    {q:'What is the single biggest shift in how you think about client success work from Day 1 to today?', type:'open'},
+    {q:'What is your specific plan for continuing to close your remaining gaps after this program ends?', type:'open'}
+  ],
+  57: [
+    {q:'What was the single most valuable thing you got from this program that you could not have gotten from just reading help articles?', type:'open'},
+    {q:'What is the one thing you would change about this program if you were redesigning it and why?', type:'open'},
+    {q:'What would you tell someone starting Day 1 tomorrow - what do you wish you had known going in?', type:'open'}
+  ],
+  58: [
+    {q:'How did today feel compared to Day 1 - what is the most important thing that changed?', type:'open'},
+    {q:'What kind of Success Manager do you want to be six months from now and what do you need to do starting next week to get there?', type:'open'},
+    {q:'Is there anyone on the team you want to acknowledge before graduation tomorrow and what would you say?', type:'open'}
+  ],
+  59: [
+    {q:'What was the most useful piece of feedback you received today and what specifically are you going to do with it?', type:'open'},
+    {q:'What surprised you most about how your team lead and peer described your strengths?', type:'open'},
+    {q:'What is the one piece of feedback from today you are committing to act on immediately after graduation?', type:'open'}
+  ],
+  60: [
+    {q:'You have completed 60 days. Name the three things you are most proud of from this program.', type:'open'},
+    {q:'What is your 30-day personal commitment after graduation - what specific habit, client relationship, and team contribution are you committing to?', type:'open'},
+    {q:'What does being a fully functioning member of the Kilo Success Team mean to you now versus what you thought it meant on Day 1?', type:'open'}
   ]
 };
 
