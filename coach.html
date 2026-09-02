@@ -434,6 +434,32 @@
 </div>
 
 <script>
+// ─── Constants ───────────────────────────────────────────────────────────────
+const NOTION_PAGES = {
+  1: 'https://app.notion.com/p/38200fd1d901812b8d19d89b5bdde5aa',
+  2: 'https://app.notion.com/p/38200fd1d901812c829be1ab6e6bb0e7',
+  3: 'https://app.notion.com/p/38900fd1d90181468691d72cc2c82480',
+  4: 'https://app.notion.com/p/38900fd1d901816da50adf52abb488fd',
+  5: 'https://app.notion.com/p/38900fd1d901818cbef2dce5dbb4c9c4',
+  6: 'https://app.notion.com/p/38900fd1d90181c0bc92ff60cd14e13c',
+  7: 'https://app.notion.com/p/38900fd1d9018189b181ffee8221a6d9',
+  8: 'https://app.notion.com/p/38900fd1d90181ec87dece3dbe34a4d7',
+  9: 'https://app.notion.com/p/38900fd1d90181988b9fc78366241700',
+  10: 'https://app.notion.com/p/38900fd1d9018102873dec6e33c41b4e',
+  11: 'https://app.notion.com/p/38900fd1d90181ea941fef5e72368be7',
+  12: 'https://app.notion.com/p/38900fd1d90181ceb2dcd73328e78377',
+  13: 'https://app.notion.com/p/38900fd1d901818c82eac46b3a950e74',
+  14: 'https://app.notion.com/p/38900fd1d90181c6a04fd72018494492',
+  15: 'https://app.notion.com/p/38900fd1d90181d08c06e69ddbef0583',
+  16: 'https://app.notion.com/p/38900fd1d90181fbae69c18f2a9f057e',
+  17: 'https://app.notion.com/p/38900fd1d901810f903bd6d79fb3e7f5',
+  18: 'https://app.notion.com/p/38900fd1d90181ad95aaf73f8a260d92',
+  19: 'https://app.notion.com/p/38900fd1d90181f8883fe1adf29471b8',
+  20: 'https://app.notion.com/p/38900fd1d90181df88a9d9f72aa82ae4'
+};
+
+const PROXY_URL = 'https://kilo-coach-proxy.joel-9ea.workers.dev';
+
 // ─── Program Data ────────────────────────────────────────────────────────────
 const PROGRAM = {
   phases: [
@@ -569,7 +595,6 @@ const DEFAULT_CHECKS = [
   { q: "Name one thing from today you'd want to revisit or go deeper on.", type: "open" }
 ];
 
-const PROXY_URL = 'https://kilo-coach-proxy.joel-9ea.workers.dev';
 let currentUser = null;
 let userData = {};
 let chatHistory = [];
@@ -858,30 +883,6 @@ function triggerCheckin() {
   userData.checkins[day] = new Date().toISOString();
   saveLocal();
 }
-
-// ─── Notion Page Links ────────────────────────────────────────────────────────
-const NOTION_PAGES = {
-  1: 'https://app.notion.com/p/38200fd1d901812b8d19d89b5bdde5aa',
-  2: 'https://app.notion.com/p/38200fd1d901812c829be1ab6e6bb0e7',
-  3: 'https://app.notion.com/p/38900fd1d90181468691d72cc2c82480',
-  4: 'https://app.notion.com/p/38900fd1d901816da50adf52abb488fd',
-  5: 'https://app.notion.com/p/38900fd1d901818cbef2dce5dbb4c9c4',
-  6: 'https://app.notion.com/p/38900fd1d90181c0bc92ff60cd14e13c',
-  7: 'https://app.notion.com/p/38900fd1d9018189b181ffee8221a6d9',
-  8: 'https://app.notion.com/p/38900fd1d90181ec87dece3dbe34a4d7',
-  9: 'https://app.notion.com/p/38900fd1d90181988b9fc78366241700',
-  10: 'https://app.notion.com/p/38900fd1d9018102873dec6e33c41b4e',
-  11: 'https://app.notion.com/p/38900fd1d90181ea941fef5e72368be7',
-  12: 'https://app.notion.com/p/38900fd1d90181ceb2dcd73328e78377',
-  13: 'https://app.notion.com/p/38900fd1d901818c82eac46b3a950e74',
-  14: 'https://app.notion.com/p/38900fd1d90181c6a04fd72018494492',
-  15: 'https://app.notion.com/p/38900fd1d90181d08c06e69ddbef0583',
-  16: 'https://app.notion.com/p/38900fd1d90181fbae69c18f2a9f057e',
-  17: 'https://app.notion.com/p/38900fd1d901810f903bd6d79fb3e7f5',
-  18: 'https://app.notion.com/p/38900fd1d90181ad95aaf73f8a260d92',
-  19: 'https://app.notion.com/p/38900fd1d90181f8883fe1adf29471b8',
-  20: 'https://app.notion.com/p/38900fd1d90181df88a9d9f72aa82ae4'
-};
 
 // ─── Pre-Check ───────────────────────────────────────────────────────────────
 function triggerPreCheck() {
