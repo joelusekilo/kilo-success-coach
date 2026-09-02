@@ -415,6 +415,8 @@ function addCoachMsg(text) {
   ca.appendChild(div);
   ca.scrollTop = ca.scrollHeight;
 }
+
+function addUserMsg(text) {
   var ca = document.getElementById('chatArea');
   var initials = userData.name ? userData.name.split(' ').map(function(n){return n[0];}).join('').toUpperCase().slice(0,2) : 'ME';
   var div = document.createElement('div');
