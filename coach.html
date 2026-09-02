@@ -1,14 +1,728 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kilo Success Team Coach</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; display: flex; flex-direction: column; }
+.header { background: #0A0A0A; color: #FAFAFA; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #2D6A4F; }
+.header-logo { font-size: 13px; font-weight: 700; color: #52B788; letter-spacing: 0.1em; text-transform: uppercase; }
+.header-title { font-size: 14px; color: #A0A0A0; }
+.switch-btn { font-size: 11px; cursor: pointer; background: none; border: 1px solid #2D6A4F; padding: 4px 10px; border-radius: 4px; color: #52B788; }
+.switch-btn:hover { background: #2D6A4F; color: #FAFAFA; }
+.main { display: flex; flex: 1; height: calc(100vh - 57px); }
+.sidebar { width: 210px; min-width: 210px; background: #F4F4F4; border-right: 1px solid #E8E8E8; display: flex; flex-direction: column; overflow-y: auto; padding: 16px; }
+.sidebar-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #A0A0A0; margin-bottom: 8px; margin-top: 12px; }
+.sidebar-label:first-child { margin-top: 0; }
+.nav-item { padding: 8px 10px; border-radius: 6px; margin-bottom: 2px; cursor: pointer; font-size: 12px; font-weight: 500; color: #555; display: flex; justify-content: space-between; align-items: center; }
+.nav-item:hover { background: #E8E8E8; }
+.nav-item.active { background: #D8F3DC; color: #2D6A4F; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #E8E8E8; }
+.dot.done { background: #52B788; }
+.dot.active { background: #E07B39; }
+.progress-wrap { margin-top: auto; padding-top: 12px; border-top: 1px solid #E8E8E8; }
+.progress-label { font-size: 11px; color: #555; margin-bottom: 6px; display: flex; justify-content: space-between; }
+.progress-bar { height: 4px; background: #E8E8E8; border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: #52B788; border-radius: 2px; transition: width 0.5s; }
+.content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.user-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; }
+.user-card { background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 40px; max-width: 480px; width: 100%; text-align: center; }
+.user-card h2 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+.user-card p { font-size: 14px; color: #555; margin-bottom: 28px; line-height: 1.6; }
+.name-input { width: 100%; padding: 10px 14px; border: 1px solid #E8E8E8; border-radius: 8px; font-size: 14px; margin-bottom: 12px; outline: none; }
+.name-input:focus { border-color: #2D6A4F; }
+.btn-primary { width: 100%; padding: 11px; background: #2D6A4F; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.btn-primary:hover { background: #52B788; }
+.existing-users { margin-top: 20px; }
+.existing-label { font-size: 12px; color: #A0A0A0; margin-bottom: 10px; }
+.user-pill { display: inline-block; padding: 5px 12px; border: 1px solid #E8E8E8; border-radius: 20px; font-size: 12px; cursor: pointer; margin: 3px; color: #555; }
+.user-pill:hover { border-color: #2D6A4F; color: #2D6A4F; }
+.day-header { padding: 18px 28px 14px; border-bottom: 1px solid #E8E8E8; background: #fff; }
+.day-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #2D6A4F; margin-bottom: 6px; }
+.day-title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.day-sub { font-size: 13px; color: #555; }
+.chat-area { flex: 1; overflow-y: auto; padding: 20px 28px; display: flex; flex-direction: column; gap: 14px; }
+.msg { display: flex; gap: 10px; max-width: 85%; }
+.msg.coach { align-self: flex-start; }
+.msg.user { align-self: flex-end; flex-direction: row-reverse; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.msg.coach .avatar { background: #2D6A4F; color: #fff; }
+.msg.user .avatar { background: #1D4E89; color: #fff; }
+.bubble { padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
+.msg.coach .bubble { background: #F4F4F4; border: 1px solid #E8E8E8; border-top-left-radius: 4px; }
+.msg.user .bubble { background: #1D4E89; color: #fff; border-top-right-radius: 4px; }
+.quiz-wrap { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.quiz-opt { padding: 10px 14px; border: 1px solid #E8E8E8; border-radius: 8px; font-size: 13px; cursor: pointer; background: #fff; text-align: left; transition: all 0.15s; }
+.quiz-opt:hover { border-color: #2D6A4F; background: #D8F3DC; }
+.quiz-opt.correct { border-color: #2D6A4F; background: #D8F3DC; color: #2D6A4F; font-weight: 500; }
+.quiz-opt.wrong { border-color: #C1121F; background: #FFE8EA; color: #C1121F; }
+.score-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-top: 8px; }
+.score-badge.high { background: #D8F3DC; color: #2D6A4F; }
+.score-badge.mid { background: #FFF0E6; color: #E07B39; }
+.score-badge.low { background: #FFE8EA; color: #C1121F; }
+.input-area { padding: 14px 28px 18px; border-top: 1px solid #E8E8E8; background: #fff; }
+.action-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.action-btn { padding: 7px 14px; border: 1px solid #E8E8E8; border-radius: 20px; font-size: 12px; cursor: pointer; background: #fff; color: #555; }
+.action-btn:hover { border-color: #2D6A4F; color: #2D6A4F; background: #D8F3DC; }
+.input-row { display: flex; gap: 10px; }
+.chat-input { flex: 1; padding: 10px 14px; border: 1px solid #E8E8E8; border-radius: 8px; font-size: 14px; outline: none; resize: none; height: 42px; font-family: Arial, sans-serif; }
+.chat-input:focus { border-color: #2D6A4F; }
+.send-btn { padding: 10px 18px; background: #2D6A4F; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; }
+.send-btn:hover { background: #52B788; }
+.send-btn:disabled { background: #E8E8E8; color: #A0A0A0; cursor: default; }
+.report-card { background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 20px; margin-top: 10px; max-width: 480px; }
+.report-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #A0A0A0; margin-bottom: 14px; }
+.report-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #F4F4F4; font-size: 13px; }
+.report-row:last-child { border-bottom: none; }
+.report-label { color: #555; }
+.report-val { font-weight: 700; }
+.report-val.green { color: #2D6A4F; }
+.report-val.amber { color: #E07B39; }
+.report-val.red { color: #C1121F; }
+.dots { display: inline-flex; gap: 4px; align-items: center; }
+.dots span { width: 6px; height: 6px; border-radius: 50%; background: #A0A0A0; animation: bounce 1.2s infinite; }
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }
+</style>
+</head>
 <body>
-<input id="name" type="text" placeholder="Your name" />
-<button onclick="go()">Get Started</button>
-<div id="out"></div>
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span class="header-logo">Kilo</span>
+    <span class="header-title">Success Team Coach</span>
+  </div>
+  <button class="switch-btn" onclick="switchUser()">Switch User</button>
+</div>
+
+<div class="main">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-label">Program</div>
+    <div class="nav-item" id="p1nav" onclick="showPhaseInfo(1)">Phase 1 - Orientation <div class="dot" id="p1dot"></div></div>
+    <div class="nav-item" id="p2nav" onclick="showPhaseInfo(2)">Phase 2 - Depth <div class="dot" id="p2dot"></div></div>
+    <div class="nav-item" id="p3nav" onclick="showPhaseInfo(3)">Phase 3 - Independence <div class="dot" id="p3dot"></div></div>
+    <div class="sidebar-label">Quick Actions</div>
+    <div class="nav-item" onclick="triggerPreCheck()">Pre-Check</div>
+    <div class="nav-item" onclick="triggerCheckin()">Check-In</div>
+    <div class="nav-item" onclick="triggerKnowledgeCheck()">Knowledge Check</div>
+    <div class="nav-item" onclick="showReportCard()">Report Card</div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="progressLabel">Day 0 of 60</span><span id="progressPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="content" id="content">
+    <div id="userScreen" style="display:flex;flex:1;align-items:center;justify-content:center;padding:40px;">
+      <div class="user-card">
+        <h2>Welcome to the Kilo Success Team Coach</h2>
+        <p>Your AI coach for the 60-day onboarding program. Tracks your progress, runs daily check-ins, and gives you knowledge checks to make sure things are actually sticking.</p>
+        <input class="name-input" id="nameInput" type="text" placeholder="Enter your name to get started..." />
+        <button class="btn-primary" id="startBtn">Get Started</button>
+        <div class="existing-users" id="existingUsers"></div>
+      </div>
+    </div>
+    <div id="dayScreen" style="display:none;flex-direction:column;height:100%;">
+      <div class="day-header">
+        <div class="day-tag" id="dayTag">Day 1 - Phase 1</div>
+        <div class="day-title" id="dayTitle">Welcome to Kilo</div>
+        <div class="day-sub" id="daySub">Today is all about context.</div>
+      </div>
+      <div class="chat-area" id="chatArea"></div>
+      <div class="input-area">
+        <div class="action-btns">
+          <button class="action-btn" onclick="triggerPreCheck()">Pre-check</button>
+          <button class="action-btn" onclick="triggerCheckin()">Check-in</button>
+          <button class="action-btn" onclick="triggerKnowledgeCheck()">Knowledge check</button>
+          <button class="action-btn" onclick="moveToNextDay()">Mark complete</button>
+          <button class="action-btn" onclick="showReportCard()">Report card</button>
+        </div>
+        <div class="input-row">
+          <textarea class="chat-input" id="chatInput" placeholder="Ask your coach anything..."></textarea>
+          <button class="send-btn" id="sendBtn">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-function go() {
-  var n = document.getElementById('name').value;
-  document.getElementById('out').innerHTML = 'Hello ' + n;
+var PROXY_URL = 'https://kilo-coach-proxy.joel-9ea.workers.dev';
+
+var NOTION_PAGES = {
+  1: 'https://app.notion.com/p/38200fd1d901812b8d19d89b5bdde5aa',
+  2: 'https://app.notion.com/p/38200fd1d901812c829be1ab6e6bb0e7',
+  3: 'https://app.notion.com/p/38900fd1d90181468691d72cc2c82480',
+  4: 'https://app.notion.com/p/38900fd1d901816da50adf52abb488fd',
+  5: 'https://app.notion.com/p/38900fd1d901818cbef2dce5dbb4c9c4',
+  6: 'https://app.notion.com/p/38900fd1d90181c0bc92ff60cd14e13c',
+  7: 'https://app.notion.com/p/38900fd1d9018189b181ffee8221a6d9',
+  8: 'https://app.notion.com/p/38900fd1d90181ec87dece3dbe34a4d7',
+  9: 'https://app.notion.com/p/38900fd1d90181988b9fc78366241700',
+  10: 'https://app.notion.com/p/38900fd1d9018102873dec6e33c41b4e',
+  11: 'https://app.notion.com/p/38900fd1d90181ea941fef5e72368be7',
+  12: 'https://app.notion.com/p/38900fd1d90181ceb2dcd73328e78377',
+  13: 'https://app.notion.com/p/38900fd1d901818c82eac46b3a950e74',
+  14: 'https://app.notion.com/p/38900fd1d90181c6a04fd72018494492',
+  15: 'https://app.notion.com/p/38900fd1d90181d08c06e69ddbef0583',
+  16: 'https://app.notion.com/p/38900fd1d90181fbae69c18f2a9f057e',
+  17: 'https://app.notion.com/p/38900fd1d901810f903bd6d79fb3e7f5',
+  18: 'https://app.notion.com/p/38900fd1d90181ad95aaf73f8a260d92',
+  19: 'https://app.notion.com/p/38900fd1d90181f8883fe1adf29471b8',
+  20: 'https://app.notion.com/p/38900fd1d90181df88a9d9f72aa82ae4'
+};
+
+var DAYS = {
+  1:  {title:'Welcome to Kilo', sub:'Company story, client world, and what Success means here.', phase:1},
+  2:  {title:'First Look at the Products', sub:'First hands-on tour of Websites, GLM, and GMS.', phase:1},
+  3:  {title:'Websites Foundations', sub:'How Kilo websites work, templates, and edit protocols.', phase:1},
+  4:  {title:'GLM Foundations', sub:'Dashboard, contacts, and how leads move through the system.', phase:1},
+  5:  {title:'GMS Foundations', sub:'Members, billing basics, and the class schedule.', phase:1},
+  6:  {title:'The Client Website Experience', sub:'Walk through a Kilo site as a prospective gym member.', phase:1},
+  7:  {title:'GLM Conversations and Lead Nurture', sub:'How communication flows from first contact to conversion.', phase:1},
+  8:  {title:'GMS Packages and Memberships', sub:'How memberships are built, priced, and managed.', phase:1},
+  9:  {title:'How the Three Products Connect', sub:'The full client lifecycle from website visitor to active member.', phase:1},
+  10: {title:'Week 2 Review and Check-In', sub:'Reflection, self-assessment, and team lead check-in.', phase:1},
+  11: {title:'Website Edit Requests', sub:'What we handle vs. what goes to the website team via Basecamp.', phase:1},
+  12: {title:'GLM Automations and Workflows', sub:'Reading, understanding, and troubleshooting workflows.', phase:1},
+  13: {title:'GMS Calendar and Scheduling', sub:'Classes, events, kiosk, and notifications.', phase:1},
+  14: {title:'Common Client Questions', sub:'Practicing answers across all three products.', phase:1},
+  15: {title:'Shadow Day', sub:'Observe a real client interaction and read DeskPro tickets.', phase:1},
+  16: {title:'GLM Calendars and Booking', sub:'Deep dive on calendar setup and booking issues.', phase:1},
+  17: {title:'GMS Invoices and Payments', sub:'Billing management and sensitive client situations.', phase:1},
+  18: {title:'Website SEO Basics', sub:'Informed SEO conversations and realistic expectations.', phase:1},
+  19: {title:'Your First Assisted Client Interaction', sub:'Handle a real client touchpoint with backup available.', phase:1},
+  20: {title:'Phase 1 Wrap-Up', sub:'Full self-assessment and team lead readiness review.', phase:1},
+  21: {title:'Websites - Going Deeper', sub:'Advanced templates, Text/HTML tab rules, complex troubleshooting.', phase:2},
+  22: {title:'GLM - Going Deeper', sub:'Automations, marketing tools, funnels, and advanced features.', phase:2},
+  23: {title:'GMS - Going Deeper', sub:'Member management, staff profiles, and reporting.', phase:2},
+  24: {title:'Advanced and Premium Features', sub:'Premium upgrade, reputation management, integrations.', phase:2},
+  25: {title:'Week 5 Wrap-Up', sub:'Advanced self-assessment and team lead check-in.', phase:2},
+  26: {title:'Multi-Product Troubleshooting', sub:'Issues that span Websites, GLM, and GMS.', phase:2},
+  27: {title:'Handling Frustrated Clients', sub:'De-escalation, expectation setting, difficult conversations.', phase:2},
+  28: {title:'Edge Cases and Escalations', sub:'Knowing the limits and routing correctly.', phase:2},
+  29: {title:'Advanced Scenario Practice', sub:'Complex real-world client situations across all three products.', phase:2},
+  30: {title:'Week 6 Wrap-Up', sub:'Reflection and prep for independent client work.', phase:2},
+  31: {title:'First Independent Client Interaction', sub:'Handle a real touchpoint solo for the first time.', phase:2},
+  32: {title:'Building Your Client Rhythm', sub:'Managing a small book of client relationships.', phase:2},
+  33: {title:'Proactive Client Outreach', sub:'When and how to reach out before clients come to you.', phase:2},
+  34: {title:'Time and Ticket Management', sub:'Staying on top of DeskPro and prioritizing effectively.', phase:2},
+  35: {title:'Week 7 Wrap-Up', sub:'Interaction log review and team lead check-in.', phase:2},
+  36: {title:'Gap Day 1 - Targeted Work', sub:'Closing your lowest-rated self-assessment areas.', phase:2},
+  37: {title:'Gap Day 2 - Continued Work', sub:'Continued targeted gap work and scenario prep.', phase:2},
+  38: {title:'Final Complex Scenarios', sub:'The hardest practice situations in the program.', phase:2},
+  39: {title:'Peer Review', sub:'Review a teammate interaction and give feedback.', phase:2},
+  40: {title:'Phase 2 Wrap-Up', sub:'Full self-assessment and Phase 3 readiness review.', phase:2},
+  41: {title:'Owning Your Client Book', sub:'Full handover and complete client list ownership.', phase:3},
+  42: {title:'Client Health Check', sub:'Assess every client relationship - green, yellow, red.', phase:3},
+  43: {title:'Proactive Outreach at Scale', sub:'Reach every client who needs a touchpoint this week.', phase:3},
+  44: {title:'Independent Work Day', sub:'Full day running your own rhythm.', phase:3},
+  45: {title:'Week 9 Wrap-Up', sub:'First full ownership week reflection.', phase:3},
+  46: {title:'Know Your Clients', sub:'Research and document each client business and goals.', phase:3},
+  47: {title:'The Check-In Call', sub:'Run a proactive check-in that feels genuine.', phase:3},
+  48: {title:'Identifying Growth Opportunities', sub:'Spot where clients could get more value from Kilo.', phase:3},
+  49: {title:'Independent Work Day', sub:'Full day with growth opportunity focus.', phase:3},
+  50: {title:'Week 10 Wrap-Up', sub:'Deepening relationships reflection.', phase:3},
+  51: {title:'Knowledge Sharing', sub:'Document something the whole team should know.', phase:3},
+  52: {title:'Mentoring a Newer Team Member', sub:'Support someone earlier in the program.', phase:3},
+  53: {title:'Process Improvement', sub:'Identify and pitch one workflow improvement.', phase:3},
+  54: {title:'Independent Work Day', sub:'Full day contributing beyond your own work.', phase:3},
+  55: {title:'Week 11 Wrap-Up', sub:'Contributing back reflection.', phase:3},
+  56: {title:'Final Self-Assessment', sub:'The most comprehensive review of the full program.', phase:3},
+  57: {title:'Program Retrospective', sub:'What worked, what did not, what you would change.', phase:3},
+  58: {title:'Final Independent Work Day', sub:'One last structured day before feedback and graduation.', phase:3},
+  59: {title:'Peer and Team Lead Feedback', sub:'Receive formal feedback from your team lead and a peer.', phase:3},
+  60: {title:'Graduation', sub:'You made it. Close the loop and step into your full role.', phase:3}
+};
+
+var CHECKS = {
+  1: [
+    {q:'What are the three Kilo products and how do they relate to each other?', type:'open'},
+    {q:'What is one key characteristic of Kilo clients that should shape every interaction?', type:'open'},
+    {q:'Which tool is the client-facing inbox for support tickets?', opts:['Help Scout','DeskPro','Basecamp','Notion'], ans:1}
+  ],
+  3: [
+    {q:'When editing content on a Kilo website, which tab should you always use?', opts:['Visual tab','Text/HTML tab','Preview tab','Draft tab'], ans:1},
+    {q:'What does NAP stand for and why does it matter for SEO?', type:'open'},
+    {q:'A client asks you to update their address on their website on a call. What do you do?', opts:['Update it directly in wp-admin','Route it to website team via Basecamp','Tell them to do it themselves','Update it then email the website team'], ans:1}
+  ],
+  5: [
+    {q:'What is a Package in GMS and what does it control?', type:'open'},
+    {q:'Where would you find a member payment history in GMS?', opts:['The calendar','Their athlete profile','The dashboard only','The packages section'], ans:1},
+    {q:'How do GLM and GMS connect to each other?', type:'open'}
+  ],
+  9: [
+    {q:'A prospect fills out a form on a Kilo website. Which product receives that lead first?', opts:['GMS','GLM','Websites backend','DeskPro'], ans:1},
+    {q:'At which stage does GMS become the primary tool?', opts:['Lead capture','Appointment booking','Member onboarding and retention','Website launch'], ans:2},
+    {q:'If a new member signs up in GMS but does not appear in GLM, what is the most likely cause?', type:'open'}
+  ],
+  14: [
+    {q:'A client says their leads stopped getting the automated welcome text. What are the first two things you check?', type:'open'},
+    {q:'What is the correct process for a client to request a website edit?', type:'open'},
+    {q:'A member says they were charged twice this month. Where do you look first in GMS?', opts:['The dashboard','Their athlete profile and invoice history','The package settings only','GMS notifications'], ans:1}
+  ],
+  20: [
+    {q:'Name the three-point proficiency definition for a Success team member.', type:'open'},
+    {q:'What is the difference between an editable and a concierge Kilo website template?', type:'open'},
+    {q:'Why must you always use the Text tab instead of the Visual tab when editing WordPress content?', type:'open'}
+  ]
+};
+
+var DEFAULT_CHECKS = [
+  {q:'What is the most important thing you learned today and how would you explain it to a gym owner?', type:'open'},
+  {q:'Which Kilo product did today content relate to most?', opts:['Websites','GLM','GMS','All three equally'], ans:3},
+  {q:'Name one thing from today you want to revisit or go deeper on.', type:'open'}
+];
+
+var currentUser = null;
+var userData = {};
+var chatHistory = [];
+var quizActive = false;
+var currentQuiz = null;
+var quizIndex = 0;
+var quizScore = 0;
+var quizTotal = 0;
+var isLoading = false;
+var isPreCheck = false;
+
+function saveLocal() {
+  if (!currentUser) return;
+  try {
+    localStorage.setItem('kilo_' + currentUser, JSON.stringify(userData));
+    var users = getUsers();
+    if (users.indexOf(currentUser) === -1) {
+      users.push(currentUser);
+      localStorage.setItem('kilo_users', JSON.stringify(users));
+    }
+  } catch(e) {}
 }
+
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem('kilo_users') || '[]'); } catch(e) { return []; }
+}
+
+function loadLocal(name) {
+  try {
+    var d = localStorage.getItem('kilo_' + name);
+    return d ? JSON.parse(d) : null;
+  } catch(e) { return null; }
+}
+
+function init() {
+  var users = getUsers();
+  var div = document.getElementById('existingUsers');
+  if (users.length > 0) {
+    div.innerHTML = '<div class="existing-label">Or continue as:</div>' +
+      users.map(function(u) {
+        return '<span class="user-pill" onclick="loadUser(\'' + u + '\')">' + u + '</span>';
+      }).join('');
+  }
+}
+
+function startSession() {
+  var name = document.getElementById('nameInput').value.trim();
+  if (!name) return;
+  loadUser(name);
+}
+
+function loadUser(name) {
+  currentUser = name;
+  var existing = loadLocal(name);
+  userData = existing || {name:name, currentDay:1, completedDays:[], scores:{}, checkins:{}, preChecks:{}, startDate:new Date().toISOString()};
+  saveLocal();
+  showDayScreen();
+}
+
+function switchUser() {
+  currentUser = null;
+  userData = {};
+  chatHistory = [];
+  quizActive = false;
+  isLoading = false;
+  isPreCheck = false;
+  currentQuiz = null;
+  document.getElementById('sendBtn').disabled = false;
+  document.getElementById('userScreen').style.display = 'flex';
+  document.getElementById('dayScreen').style.display = 'none';
+  document.getElementById('nameInput').value = '';
+  init();
+}
+
+function showDayScreen() {
+  document.getElementById('userScreen').style.display = 'none';
+  var ds = document.getElementById('dayScreen');
+  ds.style.display = 'flex';
+  ds.style.flexDirection = 'column';
+  ds.style.height = '100%';
+  updateHeader();
+  updateSidebar();
+  updateProgress();
+  document.getElementById('chatArea').innerHTML = '';
+  chatHistory = [];
+  var day = userData.currentDay;
+  var info = DAYS[day];
+  var completed = userData.completedDays ? userData.completedDays.length : 0;
+  var msg;
+  if (completed === 0) {
+    msg = 'Welcome to the Kilo Success Team Onboarding Program, ' + userData.name + '!\n\nI am your coach for the next 60 days. Here is how this works:\n\nEach day starts with a pre-check - 1 to 3 quick questions. If you already know the material you move straight through and the day is marked complete. If not, I point you to the content in Notion and you come back for a full knowledge check when you are ready.\n\nYour progress and scores are tracked so your team leads can see exactly where you are.\n\nYou are on Day ' + day + ': ' + info.title + '. Hit Pre-check to get started, or ask me anything first.';
+  } else {
+    var lastScore = userData.scores ? userData.scores[userData.currentDay - 1] : null;
+    var scoreNote = lastScore ? ' You scored ' + lastScore.correct + '/' + lastScore.total + ' on your last knowledge check.' : '';
+    msg = 'Hey ' + userData.name + '! Good to see you back.\n\nYou are on Day ' + day + ': ' + info.title + '.' + scoreNote + '\n\n' + info.sub + '\n\nReady? Hit Pre-check to get started, or ask me anything.';
+  }
+  addCoachMsg(msg);
+}
+
+function updateHeader() {
+  var day = userData.currentDay || 1;
+  var info = DAYS[day] || DAYS[1];
+  var phase = day <= 20 ? 1 : day <= 40 ? 2 : 3;
+  var phaseNames = {1:'Orientation and Exposure', 2:'Depth and Repetition', 3:'Independence'};
+  document.getElementById('dayTag').textContent = 'Day ' + day + ' - Phase ' + phase + ': ' + phaseNames[phase];
+  document.getElementById('dayTitle').textContent = info.title;
+  document.getElementById('daySub').textContent = info.sub;
+}
+
+function updateSidebar() {
+  var day = userData.currentDay || 1;
+  var phase = day <= 20 ? 1 : day <= 40 ? 2 : 3;
+  for (var p = 1; p <= 3; p++) {
+    var nav = document.getElementById('p' + p + 'nav');
+    var dot = document.getElementById('p' + p + 'dot');
+    nav.className = 'nav-item' + (p === phase ? ' active' : '');
+    dot.className = 'dot' + (p < phase ? ' done' : p === phase ? ' active' : '');
+  }
+}
+
+function updateProgress() {
+  var day = userData.currentDay || 1;
+  var completed = userData.completedDays ? userData.completedDays.length : 0;
+  var pct = Math.round((completed / 60) * 100);
+  document.getElementById('progressLabel').textContent = 'Day ' + day + ' of 60';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function addCoachMsg(text) {
+  var ca = document.getElementById('chatArea');
+  var div = document.createElement('div');
+  div.className = 'msg coach';
+  var formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  div.innerHTML = '<div class="avatar">KC</div><div class="bubble">' + formatted + '</div>';
+  ca.appendChild(div);
+  ca.scrollTop = ca.scrollHeight;
+}
+
+function addUserMsg(text) {
+  var ca = document.getElementById('chatArea');
+  var initials = userData.name ? userData.name.split(' ').map(function(n){return n[0];}).join('').toUpperCase().slice(0,2) : 'ME';
+  var div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = '<div class="avatar">' + initials + '</div><div class="bubble">' + text + '</div>';
+  ca.appendChild(div);
+  ca.scrollTop = ca.scrollHeight;
+}
+
+function addLoading() {
+  var ca = document.getElementById('chatArea');
+  var div = document.createElement('div');
+  div.className = 'msg coach';
+  div.id = 'loadingMsg';
+  div.innerHTML = '<div class="avatar">KC</div><div class="bubble"><div class="dots"><span></span><span></span><span></span></div></div>';
+  ca.appendChild(div);
+  ca.scrollTop = ca.scrollHeight;
+}
+
+function removeLoading() {
+  var el = document.getElementById('loadingMsg');
+  if (el) el.remove();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function sendMessage() {
+  if (isLoading || quizActive) return;
+  var input = document.getElementById('chatInput');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addUserMsg(text);
+  chatHistory.push({role:'user', content:text});
+  callCoach(text);
+}
+
+function callCoach(userMessage) {
+  isLoading = true;
+  document.getElementById('sendBtn').disabled = true;
+  addLoading();
+  var day = userData.currentDay || 1;
+  var info = DAYS[day];
+  var completed = userData.completedDays ? userData.completedDays.length : 0;
+  var avg = getAvgScore();
+  var system = 'You are the Kilo Success Team Coach - a warm, direct coaching companion for the 60-day onboarding program. Sound like a supportive team lead.\n\nUSER: ' + userData.name + ' | DAY: ' + day + ' - ' + info.title + ' | PHASE: ' + info.phase + ' | COMPLETED: ' + completed + '/60 | AVG SCORE: ' + avg + '%\n\nThree Kilo products:\n- Websites: WordPress-based. Two templates: editable and concierge. Training site: usekilosales.com/wp-admin. Always use Text/HTML tab never Visual. Text edits only for Success team - everything else via Basecamp.\n- GLM (Gym Lead Machine): Built on GoHighLevel. Leads, automations, conversations, calendars, pipelines. Test account: Kilo Fitness.\n- GMS (Gym Management Software): Members, packages, billing, calendar, staff. Login: app.usekilo.com (success@usekilo.com)\n\nKey rules: NAP must match Google Business Profile. Avoid AI-generated images. Client site credentials in Basecamp. DeskPro is the client inbox.\n\nKeep responses to 2-4 sentences unless they ask for more. Be direct and human.';
+  var messages = chatHistory.slice(-10);
+  fetch(PROXY_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:1000, system:system, messages:messages})
+  }).then(function(r) {
+    return r.json();
+  }).then(function(data) {
+    var reply = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : 'Got your message - try again.';
+    removeLoading();
+    addCoachMsg(reply);
+    chatHistory.push({role:'assistant', content:reply});
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+  }).catch(function(e) {
+    removeLoading();
+    addCoachMsg('Connection issue - check that the Cloudflare proxy is running and try again.');
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+  });
+}
+
+function triggerCheckin() {
+  if (isLoading || quizActive) return;
+  var day = userData.currentDay || 1;
+  var info = DAYS[day];
+  var dayDone = userData.completedDays && userData.completedDays.indexOf(day) !== -1;
+  var preCheckFailed = userData.preChecks && userData.preChecks[day] === 'failed';
+  var notionLink = NOTION_PAGES[day] ? '\n\nOpen Day ' + day + ' in Notion: ' + NOTION_PAGES[day] : '';
+  var msg;
+  if (dayDone) {
+    msg = 'Day ' + day + ' is marked complete. What is the one thing that stuck with you most today?';
+  } else if (preCheckFailed) {
+    msg = 'You are working through Day ' + day + ': ' + info.title + '.\n\nRemember the flow: Read, Watch, then Do the hands-on tasks in the actual platforms.\n\n- Websites: usekilosales.com/wp-admin\n- GLM: Kilo Fitness test account\n- GMS: app.usekilo.com' + notionLink + '\n\nWhen done, hit Knowledge check and I will confirm it landed.';
+  } else {
+    msg = 'Today is Day ' + day + ': ' + info.title + '.\n\n' + info.sub + notionLink + '\n\nStart with the pre-check. If it sends you into the content, work through Read, Watch, and Do in Notion then come back.';
+  }
+  addCoachMsg(msg);
+  chatHistory.push({role:'assistant', content:msg});
+  if (!userData.checkins) userData.checkins = {};
+  userData.checkins[day] = new Date().toISOString();
+  saveLocal();
+}
+
+function getChecks(day) {
+  if (CHECKS[day]) return CHECKS[day];
+  var keys = Object.keys(CHECKS).map(Number).filter(function(k){return k <= day;});
+  return keys.length > 0 ? CHECKS[Math.max.apply(null, keys)] : DEFAULT_CHECKS;
+}
+
+function triggerPreCheck() {
+  if (isLoading || quizActive) return;
+  var day = userData.currentDay || 1;
+  if (userData.preChecks && userData.preChecks[day] === 'passed') {
+    addCoachMsg('You already passed the pre-check for Day ' + day + '. You are cleared to move on. Hit Mark complete when done.');
+    return;
+  }
+  var checks = getChecks(day).slice(0, 3);
+  currentQuiz = checks;
+  quizIndex = 0;
+  quizScore = 0;
+  quizTotal = checks.length;
+  quizActive = true;
+  isPreCheck = true;
+  addCoachMsg('Pre-check for Day ' + day + ' - ' + checks.length + ' questions. Perfect score moves you forward. Anything less and you work through the content first.');
+  setTimeout(showQuestion, 500);
+}
+
+function triggerKnowledgeCheck() {
+  if (isLoading || quizActive) return;
+  var day = userData.currentDay || 1;
+  var checks = getChecks(day);
+  currentQuiz = checks;
+  quizIndex = 0;
+  quizScore = 0;
+  quizTotal = checks.length;
+  quizActive = true;
+  isPreCheck = false;
+  addCoachMsg('Knowledge check for Day ' + day + ' - ' + checks.length + ' questions. Let\'s go.');
+  setTimeout(showQuestion, 500);
+}
+
+function showQuestion() {
+  if (quizIndex >= currentQuiz.length) { finishQuiz(); return; }
+  var q = currentQuiz[quizIndex];
+  var ca = document.getElementById('chatArea');
+  var div = document.createElement('div');
+  div.className = 'msg coach';
+  var qNum = 'Question ' + (quizIndex + 1) + ' of ' + quizTotal;
+  if (q.type === 'open') {
+    div.innerHTML = '<div class="avatar">KC</div><div><div class="bubble"><strong>' + qNum + '</strong><br><br>' + q.q + '<div class="quiz-wrap" style="margin-top:12px;"><textarea class="chat-input" id="openAns" placeholder="Type your answer..." style="height:70px;width:100%;margin-bottom:8px;"></textarea><button class="send-btn" onclick="submitOpen(' + quizIndex + ')">Submit</button></div></div></div>';
+  } else {
+    var opts = q.opts.map(function(opt, i) {
+      return '<button class="quiz-opt" onclick="selectOpt(' + i + ',' + q.ans + ',' + quizIndex + ')">' + opt + '</button>';
+    }).join('');
+    div.innerHTML = '<div class="avatar">KC</div><div><div class="bubble"><strong>' + qNum + '</strong><br><br>' + q.q + '<div class="quiz-wrap">' + opts + '</div></div></div>';
+  }
+  ca.appendChild(div);
+  ca.scrollTop = ca.scrollHeight;
+}
+
+function selectOpt(selected, correct, qIdx) {
+  if (qIdx !== quizIndex) return;
+  var btns = document.querySelectorAll('.quiz-opt');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].disabled = true;
+    if (i === correct) btns[i].className = 'quiz-opt correct';
+    else if (i === selected) btns[i].className = 'quiz-opt wrong';
+  }
+  if (selected === correct) {
+    quizScore++;
+    setTimeout(function() { addCoachMsg('Correct!'); quizIndex++; setTimeout(showQuestion, 600); }, 400);
+  } else {
+    setTimeout(function() {
+      addCoachMsg('Not quite - the right answer is ' + currentQuiz[quizIndex].opts[correct] + '. Worth revisiting that section.');
+      quizIndex++;
+      setTimeout(showQuestion, 800);
+    }, 400);
+  }
+}
+
+function submitOpen(qIdx) {
+  if (qIdx !== quizIndex) return;
+  var ans = document.getElementById('openAns');
+  if (!ans || !ans.value.trim()) return;
+  var text = ans.value.trim();
+  addUserMsg(text);
+  quizIndex++;
+  quizScore += 0.5;
+  isLoading = true;
+  addLoading();
+  var q = currentQuiz[qIdx];
+  fetch(PROXY_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:200, messages:[{role:'user', content:'You are the Kilo Success Team Coach evaluating a knowledge check answer. Be brief (2-3 sentences), direct, constructive.\n\nQuestion: ' + q.q + '\nAnswer: ' + text + '\n\nEvaluate based on Kilo context: Websites (WordPress, editable vs concierge templates, Text/HTML tab rule), GLM (GoHighLevel, leads/automations/calendars), GMS (member management, app.usekilo.com).\n\nGive quick feedback. End with one word on its own line: STRONG, GOOD, or REVISIT.'}]})
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    var feedback = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : 'Good thinking - keep going.';
+    removeLoading();
+    addCoachMsg(feedback);
+    if (feedback.indexOf('STRONG') !== -1) quizScore += 0.5;
+    else if (feedback.indexOf('REVISIT') !== -1) quizScore -= 0.5;
+    isLoading = false;
+    setTimeout(showQuestion, 800);
+  }).catch(function() {
+    removeLoading();
+    addCoachMsg('Got it - keep going.');
+    isLoading = false;
+    setTimeout(showQuestion, 800);
+  });
+}
+
+function finishQuiz() {
+  quizActive = false;
+  var day = userData.currentDay || 1;
+  var correct = Math.max(0, Math.round(quizScore));
+  var pct = Math.round((correct / quizTotal) * 100);
+  var scoreClass = pct >= 80 ? 'high' : pct >= 60 ? 'mid' : 'low';
+  var emoji = pct >= 80 ? 'PASS' : pct >= 60 ? 'PARTIAL' : 'NEEDS WORK';
+  var feedback;
+  if (isPreCheck) {
+    if (pct === 100) {
+      if (!userData.preChecks) userData.preChecks = {};
+      userData.preChecks[day] = 'passed';
+      if (!userData.completedDays) userData.completedDays = [];
+      if (userData.completedDays.indexOf(day) === -1) userData.completedDays.push(day);
+      if (day < 60) userData.currentDay = day + 1;
+      saveLocal();
+      feedback = 'Perfect score - you know this material. Day ' + day + ' is marked complete and you are moving to Day ' + (day + 1) + ': ' + (DAYS[day+1] ? DAYS[day+1].title : 'next day') + '.';
+      updateHeader();
+      updateSidebar();
+      updateProgress();
+    } else {
+      if (!userData.preChecks) userData.preChecks = {};
+      userData.preChecks[day] = 'failed';
+      saveLocal();
+      var link = NOTION_PAGES[day] ? '\n\nNotion link: ' + NOTION_PAGES[day] : '';
+      feedback = 'You got ' + correct + '/' + quizTotal + ' - you need a perfect score to skip this day. Head into the Day ' + day + ' Notion page and work through the Read, Watch, and Do sections. The Do tasks are the most important - log into the actual platforms.' + link + '\n\nCome back and hit Knowledge check when you are done.';
+    }
+  } else {
+    if (!userData.scores) userData.scores = {};
+    userData.scores[day] = {correct:correct, total:quizTotal, pct:pct, date:new Date().toISOString()};
+    saveLocal();
+    feedback = pct >= 80 ? 'Strong result - that content is clearly landing. You are ready to move on.' : pct >= 60 ? 'Decent foundation. A couple of areas worth revisiting before you move on.' : 'Worth going back through today material before moving forward.';
+  }
+  var ca = document.getElementById('chatArea');
+  var div = document.createElement('div');
+  div.className = 'msg coach';
+  div.innerHTML = '<div class="avatar">KC</div><div><div class="bubble">' + feedback.replace(/\n/g,'<br>') + '<br><br><span class="score-badge ' + scoreClass + '">' + emoji + ' - ' + correct + '/' + quizTotal + ' - ' + pct + '%</span></div></div>';
+  ca.appendChild(div);
+  ca.scrollTop = ca.scrollHeight;
+}
+
+function moveToNextDay() {
+  if (isLoading || quizActive) return;
+  var day = userData.currentDay || 1;
+  if (!userData.completedDays) userData.completedDays = [];
+  if (userData.completedDays.indexOf(day) === -1) userData.completedDays.push(day);
+  if (day < 60) {
+    userData.currentDay = day + 1;
+    saveLocal();
+    addCoachMsg('Day ' + day + ' marked complete. Moving to Day ' + (day+1) + ': ' + DAYS[day+1].title + '. Come back tomorrow to keep going.');
+    setTimeout(function() { updateHeader(); updateSidebar(); updateProgress(); }, 1000);
+  } else {
+    saveLocal();
+    addCoachMsg('Day 60 complete. You have finished the Kilo Success Team Onboarding Program. Go have your graduation conversation with your team lead.');
+  }
+}
+
+function showReportCard() {
+  var day = userData.currentDay || 1;
+  var completed = userData.completedDays ? userData.completedDays.length : 0;
+  var scores = userData.scores || {};
+  var avg = getAvgScore();
+  var avgClass = avg >= 80 ? 'green' : avg >= 60 ? 'amber' : 'red';
+  var phase = day <= 20 ? 1 : day <= 40 ? 2 : 3;
+  var scoreRows = '';
+  var keys = Object.keys(scores);
+  if (keys.length > 0) {
+    for (var i = 0; i < keys.length; i++) {
+      var d = keys[i];
+      var s = scores[d];
+      var cls = s.pct >= 80 ? 'green' : s.pct >= 60 ? 'amber' : 'red';
+      var title = DAYS[parseInt(d)] ? DAYS[parseInt(d)].title : '';
+      scoreRows += '<div class="report-row"><div class="report-label">Day ' + d + ': ' + title + '</div><div class="report-val ' + cls + '">' + s.pct + '%</div></div>';
+    }
+  } else {
+    scoreRows = '<div class="report-row"><div class="report-label" style="color:#A0A0A0">No knowledge checks yet</div></div>';
+  }
+  var startDate = userData.startDate ? new Date(userData.startDate).toLocaleDateString() : 'Today';
+  var ca = document.getElementById('chatArea');
+  var div = document.createElement('div');
+  div.className = 'msg coach';
+  div.innerHTML = '<div class="avatar">KC</div><div><div class="bubble">Here is your current report card, ' + userData.name + '.</div><div class="report-card"><div class="report-title">Progress Report - ' + userData.name + '</div><div class="report-row"><div class="report-label">Current day</div><div class="report-val">Day ' + day + ' of 60</div></div><div class="report-row"><div class="report-label">Days completed</div><div class="report-val ' + (completed>=40?'green':completed>=20?'amber':'red') + '">' + completed + '/60</div></div><div class="report-row"><div class="report-label">Current phase</div><div class="report-val">Phase ' + phase + '</div></div><div class="report-row"><div class="report-label">Avg knowledge check score</div><div class="report-val ' + avgClass + '">' + (avg > 0 ? avg + '%' : 'No checks yet') + '</div></div><div class="report-row"><div class="report-label">Started</div><div class="report-val">' + startDate + '</div></div><br><div class="report-title">Knowledge Check History</div>' + scoreRows + '</div></div>';
+  ca.appendChild(div);
+  ca.scrollTop = ca.scrollHeight;
+}
+
+function showPhaseInfo(p) {
+  var names = {1:'Orientation and Exposure (Days 1-20)',2:'Depth and Repetition (Days 21-40)',3:'Independence (Days 41-60)'};
+  addCoachMsg('Phase ' + p + ': ' + names[p]);
+}
+
+function getAvgScore() {
+  var scores = userData.scores || {};
+  var vals = Object.keys(scores).map(function(k){return scores[k].pct;}).filter(Boolean);
+  if (!vals.length) return 0;
+  return Math.round(vals.reduce(function(a,b){return a+b;},0) / vals.length);
+}
+
+document.getElementById('startBtn').addEventListener('click', startSession);
+document.getElementById('sendBtn').addEventListener('click', sendMessage);
+document.getElementById('chatInput').addEventListener('keydown', handleKey);
+document.getElementById('nameInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') startSession();
+});
+
+init();
 </script>
 </body>
 </html>
