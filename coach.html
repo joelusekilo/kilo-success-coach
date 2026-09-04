@@ -109,6 +109,8 @@ body { font-family: Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-
     <div class="nav-item" onclick="triggerCheckin()">Check-In</div>
     <div class="nav-item" onclick="triggerKnowledgeCheck()">Knowledge Check</div>
     <div class="nav-item" onclick="showReportCard()">Report Card</div>
+    <div class="sidebar-label" style="margin-top:12px;">Team Progress</div>
+    <div id="teamProgress" style="padding:0 4px;"></div>
     <div class="progress-wrap">
       <div class="progress-label"><span id="progressLabel">Day 0 of 60</span><span id="progressPct">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
@@ -119,10 +121,13 @@ body { font-family: Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-
     <div id="userScreen" style="display:flex;flex:1;align-items:center;justify-content:center;padding:40px;">
       <div class="user-card">
         <h2>Welcome to the Kilo Success Team Coach</h2>
-        <p>Your AI coach for the 60-day onboarding program. Tracks your progress, runs daily check-ins, and gives you knowledge checks to make sure things are actually sticking.</p>
-        <input class="name-input" id="nameInput" type="text" placeholder="Enter your name to get started..." />
-        <button class="btn-primary" id="startBtn">Get Started</button>
-        <div class="existing-users" id="existingUsers"></div>
+        <p>Your AI coach for the 60-day onboarding program. Click your name to get started.</p>
+        <div id="teamButtons" style="display:flex;flex-direction:column;gap:10px;margin-top:8px;"></div>
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid #E8E8E8;">
+          <div class="existing-label" style="font-size:11px;color:#A0A0A0;margin-bottom:8px;">Or enter a different name</div>
+          <input class="name-input" id="nameInput" type="text" placeholder="Enter name..." />
+          <button class="btn-primary" id="startBtn" style="margin-top:8px;">Get Started</button>
+        </div>
       </div>
     </div>
     <div id="dayScreen" style="display:none;flex-direction:column;height:100%;">
@@ -151,6 +156,15 @@ body { font-family: Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-
 
 <script>
 var PROXY_URL = 'https://kilo-coach-proxy.joel-9ea.workers.dev';
+
+var TEAM = [
+  {name: 'Joel', role: 'lead', notionId: '3d100fd1d9018131910acdeff7b6dc9e'},
+  {name: 'Allie', role: 'lead', notionId: '3d100fd1d90181e3887bf7407da2d504'},
+  {name: 'Dennis', role: 'manager', notionId: '3d100fd1d9018107a952c4a1a9ab970e'},
+  {name: 'Danielle', role: 'manager', notionId: '3d100fd1d901817b88a1cf1d9bf17ebc'},
+  {name: 'Jamie', role: 'manager', notionId: '3d100fd1d90181d09caad7d4d8fc0860'},
+  {name: 'Sarah', role: 'manager', notionId: '3d100fd1d9018191843bfdc32e823e91'}
+];
 
 var NOTION_PAGES = {
   1: 'https://app.notion.com/p/38200fd1d901812b8d19d89b5bdde5aa',
@@ -830,6 +844,7 @@ function saveLocal() {
       localStorage.setItem('kilo_users', JSON.stringify(users));
     }
   } catch(e) {}
+  syncProgressToNotion(userData);
 }
 
 function getUsers() {
@@ -844,14 +859,53 @@ function loadLocal(name) {
 }
 
 function init() {
-  var users = getUsers();
-  var div = document.getElementById('existingUsers');
-  if (users.length > 0) {
-    div.innerHTML = '<div class="existing-label">Or continue as:</div>' +
-      users.map(function(u) {
-        return '<span class="user-pill" onclick="loadUser(\'' + u + '\')">' + u + '</span>';
-      }).join('');
-  }
+  var btns = document.getElementById('teamButtons');
+  btns.innerHTML = '';
+  TEAM.forEach(function(member) {
+    var existing = loadLocal(member.name);
+    var dayInfo = existing ? ' - Day ' + (existing.currentDay || 1) : '';
+    var roleColor = member.role === 'lead' ? '#1D4E89' : '#2D6A4F';
+    var btn = document.createElement('button');
+    btn.style.cssText = 'padding:12px 16px;border:2px solid ' + roleColor + ';border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;background:#fff;color:' + roleColor + ';text-align:left;display:flex;justify-content:space-between;align-items:center;';
+    btn.innerHTML = '<span>' + member.name + '</span><span style="font-size:11px;color:#A0A0A0;">' + (member.role === 'lead' ? 'Success Lead' : 'Success Manager') + dayInfo + '</span>';
+    btn.onclick = function() { loadUser(member.name); };
+    btns.appendChild(btn);
+  });
+}
+
+function syncProgressToNotion(userData) {
+  if (!userData || !userData.name) return;
+  var member = TEAM.find(function(m) { return m.name === userData.name; });
+  if (!member) return;
+  var day = userData.currentDay || 1;
+  var completed = userData.completedDays ? userData.completedDays.length : 0;
+  var scores = userData.scores || {};
+  var vals = Object.keys(scores).map(function(k) { return scores[k].pct; }).filter(Boolean);
+  var avg = vals.length ? Math.round(vals.reduce(function(a,b){return a+b;},0) / vals.length) / 100 : 0;
+  var phase = day <= 20 ? 'Phase 1 - Orientation' : day <= 40 ? 'Phase 2 - Depth' : 'Phase 3 - Independence';
+  if (completed >= 60) phase = 'Complete';
+  var status = 'On Track';
+  var daysSinceStart = userData.startDate ? Math.floor((Date.now() - new Date(userData.startDate).getTime()) / 86400000) : 0;
+  if (completed < daysSinceStart - 5) status = 'Behind';
+  if (completed < daysSinceStart - 10) status = 'Needs Attention';
+  if (completed >= 60) status = 'Complete';
+  var today = new Date().toISOString().split('T')[0];
+  fetch(PROXY_URL + '/notion-update', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      pageId: member.notionId,
+      properties: {
+        'Current Day': day,
+        'Days Completed': completed,
+        'Phase': phase,
+        'Avg Score': avg,
+        'Status': status,
+        'date:Last Active:start': today,
+        'date:Last Active:is_datetime': 0
+      }
+    })
+  }).catch(function() {}); // silent fail - don't disrupt the user experience
 }
 
 function startSession() {
@@ -883,6 +937,24 @@ function switchUser() {
   init();
 }
 
+function updateTeamProgress() {
+  var tp = document.getElementById('teamProgress');
+  if (!tp) return;
+  var html = '';
+  TEAM.forEach(function(member) {
+    var data = loadLocal(member.name);
+    var day = data ? (data.currentDay || 1) : 1;
+    var completed = data ? (data.completedDays ? data.completedDays.length : 0) : 0;
+    var dot = completed >= 60 ? '#2D6A4F' : day <= 20 ? '#E07B39' : day <= 40 ? '#1D4E89' : '#2D6A4F';
+    var isMe = member.name === currentUser;
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 6px;border-radius:4px;' + (isMe ? 'background:#F4F4F4;' : '') + '">';
+    html += '<span style="font-size:12px;font-weight:' + (isMe ? '600' : '400') + ';color:#333;">' + member.name + '</span>';
+    html += '<span style="font-size:11px;color:#777;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:' + dot + ';display:inline-block;"></span>Day ' + day + '</span>';
+    html += '</div>';
+  });
+  tp.innerHTML = html;
+}
+
 function showDayScreen() {
   document.getElementById('userScreen').style.display = 'none';
   var ds = document.getElementById('dayScreen');
@@ -892,6 +964,7 @@ function showDayScreen() {
   updateHeader();
   updateSidebar();
   updateProgress();
+  updateTeamProgress();
   document.getElementById('chatArea').innerHTML = '';
   chatHistory = [];
   var day = userData.currentDay;
