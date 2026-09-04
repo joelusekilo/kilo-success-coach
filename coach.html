@@ -163,7 +163,8 @@ var TEAM = [
   {name: 'Dennis', role: 'manager', notionId: '3d100fd1d9018107a952c4a1a9ab970e'},
   {name: 'Danielle', role: 'manager', notionId: '3d100fd1d901817b88a1cf1d9bf17ebc'},
   {name: 'Jamie', role: 'manager', notionId: '3d100fd1d90181d09caad7d4d8fc0860'},
-  {name: 'Sarah', role: 'manager', notionId: '3d100fd1d9018191843bfdc32e823e91'}
+  {name: 'Sarah', role: 'manager', notionId: '3d100fd1d9018191843bfdc32e823e91'},
+  {name: 'Kilo Test', role: 'test', notionId: '3d100fd1d90181aabcb7ea3e4ee486bb'}
 ];
 
 var NOTION_PAGES = {
@@ -861,14 +862,20 @@ function loadLocal(name) {
 function init() {
   var btns = document.getElementById('teamButtons');
   btns.innerHTML = '';
-  TEAM.forEach(function(member) {
+  TEAM.forEach(function(member, idx) {
+    if (member.role === 'test' && idx > 0) {
+      var sep = document.createElement('div');
+      sep.style.cssText = 'border-top:1px solid #E8E8E8;margin:6px 0;';
+      btns.appendChild(sep);
+    }
     var existing = loadLocal(member.name);
     var dayInfo = existing ? ' - Day ' + (existing.currentDay || 1) : '';
-    var roleColor = member.role === 'lead' ? '#1D4E89' : '#2D6A4F';
+    var roleColor = member.role === 'lead' ? '#1D4E89' : member.role === 'test' ? '#A0A0A0' : '#2D6A4F';
+    var roleLabel = member.role === 'lead' ? 'Success Lead' : member.role === 'test' ? 'Test Account' : 'Success Manager';
     var btn = document.createElement('button');
     btn.style.cssText = 'padding:12px 16px;border:2px solid ' + roleColor + ';border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;background:#fff;color:' + roleColor + ';text-align:left;display:flex;justify-content:space-between;align-items:center;';
-    btn.innerHTML = '<span>' + member.name + '</span><span style="font-size:11px;color:#A0A0A0;">' + (member.role === 'lead' ? 'Success Lead' : 'Success Manager') + dayInfo + '</span>';
-    btn.onclick = function() { loadUser(member.name); };
+    btn.innerHTML = '<span>' + member.name + '</span><span style="font-size:11px;color:#A0A0A0;">' + roleLabel + dayInfo + '</span>';
+    btn.onclick = (function(n) { return function() { loadUser(n); }; })(member.name);
     btns.appendChild(btn);
   });
 }
@@ -884,12 +891,70 @@ function syncProgressToNotion(userData) {
   var avg = vals.length ? Math.round(vals.reduce(function(a,b){return a+b;},0) / vals.length) / 100 : 0;
   var phase = day <= 20 ? 'Phase 1 - Orientation' : day <= 40 ? 'Phase 2 - Depth' : 'Phase 3 - Independence';
   if (completed >= 60) phase = 'Complete';
-  var status = 'On Track';
-  var daysSinceStart = userData.startDate ? Math.floor((Date.now() - new Date(userData.startDate).getTime()) / 86400000) : 0;
-  if (completed < daysSinceStart - 5) status = 'Behind';
-  if (completed < daysSinceStart - 10) status = 'Needs Attention';
-  if (completed >= 60) status = 'Complete';
+
+  // Phase 1 sprint: 30 lessons by Sep 23
+  // Working days: Sep 8-11 (4), Sep 14-18 (5), Sep 21-23 (3) = 12 days at 2.5/day
+  var sprintDays = [
+    '2026-09-08','2026-09-09','2026-09-10','2026-09-11',
+    '2026-09-14','2026-09-15','2026-09-16','2026-09-17','2026-09-18',
+    '2026-09-21','2026-09-22','2026-09-23'
+  ];
+
+  // Phase 2: lessons 31-60 by Oct 31
+  // ~27 working days from Sep 24 to Oct 31 = roughly 1.1 lessons/day
+  var extendedDays = [
+    '2026-09-24','2026-09-25','2026-09-26',
+    '2026-09-29','2026-09-30',
+    '2026-10-01','2026-10-02','2026-10-03',
+    '2026-10-06','2026-10-07','2026-10-08','2026-10-09','2026-10-10',
+    '2026-10-13','2026-10-14','2026-10-15','2026-10-16','2026-10-17',
+    '2026-10-20','2026-10-21','2026-10-22','2026-10-23','2026-10-24',
+    '2026-10-27','2026-10-28','2026-10-29','2026-10-30','2026-10-31'
+  ];
+
   var today = new Date().toISOString().split('T')[0];
+
+  // Count elapsed sprint days
+  var sprintElapsed = 0;
+  for (var i = 0; i < sprintDays.length; i++) {
+    if (sprintDays[i] <= today) sprintElapsed++;
+  }
+
+  // Count elapsed extended days
+  var extElapsed = 0;
+  for (var j = 0; j < extendedDays.length; j++) {
+    if (extendedDays[j] <= today) extElapsed++;
+  }
+
+  var status = 'On Track';
+
+  if (completed >= 60) {
+    status = 'Complete';
+  } else if (today <= '2026-09-23') {
+    // Sprint phase - target 30 by Sep 23
+    var sprintExpected = Math.min(30, Math.round(sprintElapsed * 2.5));
+    if (sprintElapsed === 0) {
+      status = 'On Track';
+    } else if (completed >= sprintExpected) {
+      status = 'On Track';
+    } else if (completed >= sprintExpected - 2) {
+      status = 'Behind';
+    } else {
+      status = 'Needs Attention';
+    }
+  } else {
+    // Extended phase - target 60 by Oct 31
+    // Expected = 30 (sprint) + extended days * (30/28)
+    var extExpected = Math.min(60, 30 + Math.round(extElapsed * (30 / 28)));
+    if (completed >= extExpected) {
+      status = 'On Track';
+    } else if (completed >= extExpected - 3) {
+      status = 'Behind';
+    } else {
+      status = 'Needs Attention';
+    }
+  }
+
   fetch(PROXY_URL + '/notion-update', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -905,7 +970,7 @@ function syncProgressToNotion(userData) {
         'date:Last Active:is_datetime': 0
       }
     })
-  }).catch(function() {}); // silent fail - don't disrupt the user experience
+  }).catch(function() {});
 }
 
 function startSession() {
@@ -942,6 +1007,7 @@ function updateTeamProgress() {
   if (!tp) return;
   var html = '';
   TEAM.forEach(function(member) {
+    if (member.role === 'test') return;
     var data = loadLocal(member.name);
     var day = data ? (data.currentDay || 1) : 1;
     var completed = data ? (data.completedDays ? data.completedDays.length : 0) : 0;
