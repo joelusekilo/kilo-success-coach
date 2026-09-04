@@ -1180,8 +1180,17 @@ function finishQuiz() {
   } else {
     if (!userData.scores) userData.scores = {};
     userData.scores[day] = {correct:correct, total:quizTotal, pct:pct, date:new Date().toISOString()};
-    saveLocal();
-    feedback = pct >= 80 ? 'Strong result - that content is clearly landing. You are ready to move on.' : pct >= 60 ? 'Decent foundation. A couple of areas worth revisiting before you move on.' : 'Worth going back through today material before moving forward.';
+    if (pct === 100) {
+      if (!userData.completedDays) userData.completedDays = [];
+      if (userData.completedDays.indexOf(day) === -1) userData.completedDays.push(day);
+      if (day < 60) userData.currentDay = day + 1;
+      saveLocal();
+      feedback = 'Perfect score - Day ' + day + ' is marked complete and you are moving to Day ' + (day + 1) + ': ' + (DAYS[day+1] ? DAYS[day+1].title : 'next day') + '.';
+      setTimeout(function() { updateHeader(); updateSidebar(); updateProgress(); }, 800);
+    } else {
+      saveLocal();
+      feedback = pct >= 60 ? 'You got ' + correct + '/' + quizTotal + ' - you need a perfect score to move on. Review what you missed and hit Knowledge check again when you are ready.' : 'You got ' + correct + '/' + quizTotal + ' - worth going back through the Notion page before trying again.';
+    }
   }
   var ca = document.getElementById('chatArea');
   var div = document.createElement('div');
@@ -1189,6 +1198,11 @@ function finishQuiz() {
   div.innerHTML = '<div class="avatar">KC</div><div><div class="bubble">' + feedback.replace(/\n/g,'<br>') + '<br><br><span class="score-badge ' + scoreClass + '">' + emoji + ' - ' + correct + '/' + quizTotal + ' - ' + pct + '%</span></div></div>';
   ca.appendChild(div);
   ca.scrollTop = ca.scrollHeight;
+  // Always reset flags at end of quiz regardless of path
+  quizActive = false;
+  isLoading = false;
+  isPreCheck = false;
+  document.getElementById('sendBtn').disabled = false;
 }
 
 function moveToNextDay() {
