@@ -552,9 +552,9 @@ var CHECKS = {
     {q:'If a gym owner says a lead stopped responding after booking a call, where in GLM would you look first?', type:'open'}
   ],
   8: [
-    {q:'In GMS what is the difference between a Package and a Fee?', type:'open'},
-    {q:'What does the GMS Sales Portal allow gym owners to do?', type:'open'},
-    {q:'A gym owner says a member was charged the wrong amount. Walk through the first two places you check in GMS.', type:'open'}
+    {q:'A gym owner calls you because a long-time member says her membership was cancelled without her consent. Walk through your full investigation - what do you check and in what order?', type:'open'},
+    {q:'A new gym owner wants to offer a founding member discount for the first 20 people who sign up online before they open. Which GMS feature handles this and what would you tell them to set up?', type:'open'},
+    {q:'What happens to a member in GMS when their payment fails - walk through what the system does automatically and what the gym owner needs to do manually?', type:'open'}
   ],
   9: [
     {q:'A prospect fills out a form on a Kilo website. Which product receives that lead first?', opts:['GMS','GLM','Websites backend','DeskPro'], ans:1},
@@ -1262,6 +1262,10 @@ function submitOpen(qIdx) {
   var ans = document.getElementById('openAns');
   if (!ans || !ans.value.trim()) return;
   var text = ans.value.trim();
+  // Immediately disable the button and clear the input to prevent double submission
+  var btn = ans.parentNode.querySelector('button');
+  if (btn) { btn.disabled = true; btn.textContent = 'Submitted...'; }
+  ans.disabled = true;
   addUserMsg(text);
   quizIndex++;
   quizScore += 0.75;
