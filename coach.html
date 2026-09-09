@@ -300,7 +300,7 @@ var PRE_CHECKS = {
     {q:'What connects GLM and GMS so that new members flow between both platforms?', opts:['A Zapier integration','The Kilo integration built between the two products','A manual export','DeskPro triggers'], ans:1}
   ],
   10: [
-    {q:'How often does the average Kilo client contact support?', opts:['Every 3-5 days','Every 16-17 days','Once a month','Every 30-45 days'], ans:1},
+    {q:'What are the three parts of the Kilo Success team proficiency definition?', opts:['Know everything, answer fast, never escalate','Know enough not to embarrass Kilo, know where to find answers, know when to escalate','Know the products, know the clients, know the team','Read the help docs, watch the videos, do the tasks'], ans:1},
     {q:'What tab should you never use when editing WordPress content?', opts:['Text','HTML','Visual','Preview'], ans:2},
     {q:'Where do you find the Kilo website training account credentials?', opts:['Notion','DeskPro','Basecamp','1Password'], ans:2}
   ],
@@ -350,9 +350,9 @@ var PRE_CHECKS = {
     {q:'After your first assisted interaction, what is the most important next step?', opts:['Move on to the next ticket','Write up a debrief and share with your team lead','Update Notion','Email the client a follow-up'], ans:1}
   ],
   20: [
-    {q:'Phase 2 is called what?', opts:['Orientation and Exposure','Independence','Depth and Repetition','Building Confidence'], ans:2},
-    {q:'What is the key difference between Phase 1 and Phase 2 in terms of what is expected of you?', opts:['Phase 2 has more reading','Phase 2 has more independent work with less hand-holding','Phase 2 focuses only on GMS','Phase 2 is shorter'], ans:1},
-    {q:'What should you bring to your Phase 1 team lead review?', opts:['Just your questions','Your self-assessment, debrief notes, and running questions list','A list of clients you know','Your Day 1 notes only'], ans:1}
+    {q:'What are the three parts of the Kilo Success Manager proficiency definition?', opts:['Know everything, answer fast, never escalate','Know enough not to embarrass Kilo, know where to find answers, know when to escalate','Know the products, know the clients, know the team','Read the help docs, watch the videos, do the tasks'], ans:1},
+    {q:'What is the key difference between an editable and a concierge Kilo website template from the client perspective?', opts:['Editable templates cost more','Editable templates let clients make changes themselves, concierge templates require Kilo to make all changes','Concierge templates are newer','There is no difference'], ans:1},
+    {q:'Why must you always use the Text/HTML tab instead of the Visual tab when editing content in a Kilo WordPress site?', opts:['The Visual tab is slower','Pasting in Visual can import hidden CSS that breaks page layouts','The Text tab has more features','The Visual tab requires Admin access'], ans:1}
   ],
   21: [{q:'What is the rule for editing content in a Kilo WordPress site?', opts:['Use Visual tab','Use Text/HTML tab always','Use Elementor','Use the page preview'], ans:1},
     {q:'What happens to unused pages on a Kilo website that are not in draft?', opts:['Nothing','Google indexes them and wastes crawl resources','They slow the site','They get deleted'], ans:1},
@@ -362,7 +362,7 @@ var PRE_CHECKS = {
     {q:'GLM funnels and forms live in which section?', opts:['Automations','Contacts','Sites','Opportunities'], ans:2},
     {q:'Where do you find workflow execution history for a specific contact in GLM?', opts:['Dashboard','Their contact profile activity','The automation overview only','Reporting tab'], ans:1}
   ],
-  23: [{q:'In GMS what separates a Staff profile from an Athlete profile?', opts:['Staff pay monthly fees','Staff can be assigned to classes and author posts','Staff get discounts','There is no functional difference'], ans:1},
+  23: [{q:'In GMS what separates a Staff profile from an Athlete profile?', opts:['Staff pay monthly fees','Staff can be assigned to classes, set availability, and be tracked for payroll','Staff get discounts on memberships','There is no functional difference'], ans:1},
     {q:'What GMS access levels exist for staff?', opts:['Admin and Viewer only','Multiple levels controlling what each staff member can see and edit','Full and Limited only','Owner and Coach only'], ans:1},
     {q:'Where do you find revenue and attendance data in GMS?', opts:['The Calendar','The Packages section','The Dashboard','DeskPro'], ans:2}
   ],
@@ -562,8 +562,8 @@ var CHECKS = {
     {q:'If a new member signs up in GMS but does not appear in GLM, what is the most likely cause?', type:'open'}
   ],
   10: [
-    {q:'Name the three-point proficiency definition for a Kilo Success team member.', type:'open'},
-    {q:'After two weeks in the program, which of the three products feels most natural to you and which feels most foreign?', type:'open'},
+    {q:'Complete the three-part Kilo Success team proficiency definition: Know enough not to embarrass Kilo, know where to _______, and know when to _______.', opts:['find the answer / escalate','ask questions / follow up','check Notion / call the team','read the docs / escalate'], ans:0},
+    {q:'After two weeks in the program, which of the three products feels most natural to you and which needs the most work?', type:'open'},
     {q:'What is the correct escalation path when a client has a website issue you cannot resolve yourself?', type:'open'}
   ],
   11: [
@@ -612,9 +612,9 @@ var CHECKS = {
     {q:'After your first assisted interaction what is the most important thing to do in the next 30 minutes?', type:'open'}
   ],
   20: [
-    {q:'Name the three-point proficiency definition for a Kilo Success Manager.', type:'open'},
-    {q:'What is the difference between an editable and a concierge Kilo website template from the client perspective?', type:'open'},
-    {q:'Why must you always use the Text/HTML tab instead of the Visual tab when editing content in a Kilo WordPress site?', type:'open'}
+    {q:'What are the three things every Kilo Success Manager must be able to do to be considered generalist-ready?', opts:['Know everything, answer fast, never escalate','Know enough not to embarrass Kilo, know where to find the answer, know when to escalate','Know all products, know all clients, know all processes','Read all articles, watch all videos, complete all tasks'], ans:1},
+    {q:'What is the key difference between an editable and a concierge Kilo website template from the client perspective?', type:'open'},
+    {q:'A teammate asks why they should always use the Text/HTML tab in WordPress instead of Visual. What do you tell them?', type:'open'}
   ],
   21: [
     {q:'What is the single most important rule when editing content in any Kilo WordPress site and why does it matter?', type:'open'},
