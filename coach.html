@@ -542,9 +542,9 @@ var CHECKS = {
     {q:'GMS handles everything after someone becomes a member. Name three things it manages.', type:'open'}
   ],
   6: [
-    {q:'On a Kilo client website what should always be enabled on mobile and what three options does it show?', type:'open'},
-    {q:'Why does Kilo recommend Google Reviews embeds over static written testimonials?', type:'open'},
-    {q:'What does NAP stand for and why must it match the Google Business Profile exactly?', type:'open'}
+    {q:'On a Kilo client website the mobile floating bar should always be enabled. What three options does it show visitors?', opts:['Home, About, Contact','Call, Email, Map','Free Intro, Call, Directions','Book Now, Chat, Help'], ans:2},
+    {q:'Why does Kilo specifically recommend Google Reviews embeds over copy-pasted written testimonials?', opts:['They look more modern','They are verifiable and carry credibility signals that static text does not','They are easier to add to the site','They update automatically without any work'], ans:1},
+    {q:'NAP stands for Name, Address, and Phone. Explain why it must match the Google Business Profile exactly and what happens if it does not.', type:'open'}
   ],
   7: [
     {q:'In GLM where does every lead, client conversation, and interaction history live?', opts:['Opportunities','Contacts','Conversations','Pipelines'], ans:1},
@@ -1188,6 +1188,7 @@ function getChecks(day) {
 
 function triggerPreCheck() {
   if (isLoading || quizActive) return;
+  openAnswerSubmitted = false;
   var day = userData.currentDay || 1;
   if (userData.preChecks && userData.preChecks[day] === 'passed') {
     addCoachMsg('You already passed the pre-check for Day ' + day + '. You are cleared to move on. Hit Mark complete when done.');
@@ -1206,6 +1207,7 @@ function triggerPreCheck() {
 
 function triggerKnowledgeCheck() {
   if (isLoading || quizActive) return;
+  openAnswerSubmitted = false;
   var day = userData.currentDay || 1;
   var checks = getChecks(day);
   currentQuiz = checks;
@@ -1257,12 +1259,15 @@ function selectOpt(selected, correct, qIdx) {
   }
 }
 
+var openAnswerSubmitted = false;
+
 function submitOpen(qIdx) {
   if (qIdx !== quizIndex) return;
+  if (openAnswerSubmitted) return;
   var ans = document.getElementById('openAns');
   if (!ans || !ans.value.trim()) return;
+  openAnswerSubmitted = true;
   var text = ans.value.trim();
-  // Immediately disable the button and clear the input to prevent double submission
   var btn = ans.parentNode.querySelector('button');
   if (btn) { btn.disabled = true; btn.textContent = 'Submitted...'; }
   ans.disabled = true;
@@ -1270,6 +1275,7 @@ function submitOpen(qIdx) {
   quizIndex++;
   quizScore += 0.75;
   isLoading = true;
+  document.getElementById('sendBtn').disabled = true;
   addLoading();
   var q = currentQuiz[qIdx];
   var qNum = qIdx + 1;
@@ -1284,11 +1290,15 @@ function submitOpen(qIdx) {
     if (feedback.indexOf('STRONG') !== -1) quizScore += 0.25;
     else if (feedback.indexOf('REVISIT') !== -1) quizScore -= 0.5;
     isLoading = false;
+    openAnswerSubmitted = false;
+    document.getElementById('sendBtn').disabled = false;
     setTimeout(showQuestion, 800);
   }).catch(function() {
     removeLoading();
     addCoachMsg('Got it - keep going.');
     isLoading = false;
+    openAnswerSubmitted = false;
+    document.getElementById('sendBtn').disabled = false;
     setTimeout(showQuestion, 800);
   });
 }
