@@ -1005,20 +1005,41 @@ function switchUser() {
 function updateTeamProgress() {
   var tp = document.getElementById('teamProgress');
   if (!tp) return;
-  var html = '';
-  TEAM.forEach(function(member) {
-    if (member.role === 'test') return;
-    var data = loadLocal(member.name);
-    var day = data ? (data.currentDay || 1) : 1;
-    var completed = data ? (data.completedDays ? data.completedDays.length : 0) : 0;
-    var dot = completed >= 60 ? '#2D6A4F' : day <= 20 ? '#E07B39' : day <= 40 ? '#1D4E89' : '#2D6A4F';
-    var isMe = member.name === currentUser;
-    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 6px;border-radius:4px;' + (isMe ? 'background:#F4F4F4;' : '') + '">';
-    html += '<span style="font-size:12px;font-weight:' + (isMe ? '600' : '400') + ';color:#333;">' + member.name + '</span>';
-    html += '<span style="font-size:11px;color:#777;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:' + dot + ';display:inline-block;"></span>Day ' + day + '</span>';
-    html += '</div>';
+  // Fetch live data from Notion via the proxy
+  fetch(PROXY_URL + '/notion-progress', {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'}
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (!data || !data.results) return;
+    var html = '';
+    TEAM.forEach(function(member) {
+      if (member.role === 'test') return;
+      var row = data.results.find(function(r) { return r.Name === member.name; });
+      var day = row ? (row['Current Day'] || 1) : 1;
+      var completed = row ? (row['Days Completed'] || 0) : 0;
+      var dot = completed >= 60 ? '#2D6A4F' : completed >= 30 ? '#1D4E89' : day > 1 ? '#E07B39' : '#E8E8E8';
+      var isMe = member.name === currentUser;
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 6px;border-radius:4px;' + (isMe ? 'background:#F4F4F4;' : '') + '">';
+      html += '<span style="font-size:12px;font-weight:' + (isMe ? '600' : '400') + ';color:#333;">' + member.name + '</span>';
+      html += '<span style="font-size:11px;color:#777;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:' + dot + ';display:inline-block;"></span>Day ' + day + '</span>';
+      html += '</div>';
+    });
+    tp.innerHTML = html || '<div style="font-size:11px;color:#A0A0A0;padding:4px 6px;">Loading...</div>';
+  }).catch(function() {
+    // Fall back to localStorage if fetch fails
+    var html = '';
+    TEAM.forEach(function(member) {
+      if (member.role === 'test') return;
+      var data = loadLocal(member.name);
+      var day = data ? (data.currentDay || 1) : 1;
+      var isMe = member.name === currentUser;
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 6px;border-radius:4px;' + (isMe ? 'background:#F4F4F4;' : '') + '">';
+      html += '<span style="font-size:12px;font-weight:' + (isMe ? '600' : '400') + ';color:#333;">' + member.name + '</span>';
+      html += '<span style="font-size:11px;color:#777;">Day ' + day + '</span>';
+      html += '</div>';
+    });
+    tp.innerHTML = html;
   });
-  tp.innerHTML = html;
 }
 
 function showDayScreen() {
@@ -1031,6 +1052,7 @@ function showDayScreen() {
   updateSidebar();
   updateProgress();
   updateTeamProgress();
+  syncProgressToNotion(userData);
   document.getElementById('chatArea').innerHTML = '';
   chatHistory = [];
   var day = userData.currentDay;
