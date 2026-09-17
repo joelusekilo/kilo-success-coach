@@ -109,8 +109,6 @@ body { font-family: Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-
     <div class="nav-item" onclick="triggerCheckin()">Check-In</div>
     <div class="nav-item" onclick="triggerKnowledgeCheck()">Knowledge Check</div>
     <div class="nav-item" onclick="showReportCard()">Report Card</div>
-    <div class="sidebar-label" style="margin-top:12px;">Team Progress</div>
-    <div id="teamProgress" style="padding:0 4px;"></div>
     <div class="progress-wrap">
       <div class="progress-label"><span id="progressLabel">Day 0 of 60</span><span id="progressPct">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
@@ -868,13 +866,11 @@ function init() {
       sep.style.cssText = 'border-top:1px solid #E8E8E8;margin:6px 0;';
       btns.appendChild(sep);
     }
-    var existing = loadLocal(member.name);
-    var dayInfo = existing ? ' - Day ' + (existing.currentDay || 1) : '';
     var roleColor = member.role === 'lead' ? '#1D4E89' : member.role === 'test' ? '#A0A0A0' : '#2D6A4F';
     var roleLabel = member.role === 'lead' ? 'Success Lead' : member.role === 'test' ? 'Test Account' : 'Success Manager';
     var btn = document.createElement('button');
     btn.style.cssText = 'padding:12px 16px;border:2px solid ' + roleColor + ';border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;background:#fff;color:' + roleColor + ';text-align:left;display:flex;justify-content:space-between;align-items:center;';
-    btn.innerHTML = '<span>' + member.name + '</span><span style="font-size:11px;color:#A0A0A0;">' + roleLabel + dayInfo + '</span>';
+    btn.innerHTML = '<span>' + member.name + '</span><span style="font-size:11px;color:#A0A0A0;">' + roleLabel + '</span>';
     btn.onclick = (function(n) { return function() { loadUser(n); }; })(member.name);
     btns.appendChild(btn);
   });
@@ -1051,7 +1047,6 @@ function showDayScreen() {
   updateHeader();
   updateSidebar();
   updateProgress();
-  updateTeamProgress();
   syncProgressToNotion(userData);
   document.getElementById('chatArea').innerHTML = '';
   chatHistory = [];
