@@ -1239,21 +1239,28 @@ function triggerKnowledgeCheck() {
 
 function showQuestion() {
   if (quizIndex >= currentQuiz.length) { finishQuiz(); return; }
+  openAnswerSubmitted = false;
   var q = currentQuiz[quizIndex];
   var ca = document.getElementById('chatArea');
   var div = document.createElement('div');
   div.className = 'msg coach';
   var qNum = 'Question ' + (quizIndex + 1) + ' of ' + quizTotal;
+  var capturedIdx = quizIndex;
   if (q.type === 'open') {
-    div.innerHTML = '<div class="avatar">KC</div><div><div class="bubble"><strong>' + qNum + '</strong><br><br>' + q.q + '<div class="quiz-wrap" style="margin-top:12px;"><textarea class="chat-input" id="openAns" placeholder="Type your answer..." style="height:70px;width:100%;margin-bottom:8px;"></textarea><button class="send-btn" onclick="submitOpen(' + quizIndex + ')">Submit</button></div></div></div>';
+    div.innerHTML = '<div class="avatar">KC</div><div><div class="bubble"><strong>' + qNum + '</strong><br><br>' + q.q + '<div class="quiz-wrap" style="margin-top:12px;"><textarea class="chat-input" id="openAns' + capturedIdx + '" placeholder="Type your answer..." style="height:70px;width:100%;margin-bottom:8px;"></textarea><button class="send-btn" id="submitBtn' + capturedIdx + '">Submit</button></div></div></div>';
+    ca.appendChild(div);
+    ca.scrollTop = ca.scrollHeight;
+    document.getElementById('submitBtn' + capturedIdx).addEventListener('click', function() {
+      submitOpen(capturedIdx);
+    });
   } else {
     var opts = q.opts.map(function(opt, i) {
       return '<button class="quiz-opt" onclick="selectOpt(' + i + ',' + q.ans + ',' + quizIndex + ')">' + opt + '</button>';
     }).join('');
     div.innerHTML = '<div class="avatar">KC</div><div><div class="bubble"><strong>' + qNum + '</strong><br><br>' + q.q + '<div class="quiz-wrap">' + opts + '</div></div></div>';
+    ca.appendChild(div);
+    ca.scrollTop = ca.scrollHeight;
   }
-  ca.appendChild(div);
-  ca.scrollTop = ca.scrollHeight;
 }
 
 function selectOpt(selected, correct, qIdx) {
@@ -1281,11 +1288,11 @@ var openAnswerSubmitted = false;
 function submitOpen(qIdx) {
   if (qIdx !== quizIndex) return;
   if (openAnswerSubmitted) return;
-  var ans = document.getElementById('openAns');
+  var ans = document.getElementById('openAns' + qIdx);
   if (!ans || !ans.value.trim()) return;
   openAnswerSubmitted = true;
   var text = ans.value.trim();
-  var btn = ans.parentNode.querySelector('button');
+  var btn = document.getElementById('submitBtn' + qIdx);
   if (btn) { btn.disabled = true; btn.textContent = 'Submitted...'; }
   ans.disabled = true;
   addUserMsg(text);
@@ -1332,6 +1339,8 @@ function finishQuiz() {
     if (pct === 100) {
       if (!userData.preChecks) userData.preChecks = {};
       userData.preChecks[day] = 'passed';
+      if (!userData.scores) userData.scores = {};
+      userData.scores[day] = {correct:quizTotal, total:quizTotal, pct:100, date:new Date().toISOString()};
       if (!userData.completedDays) userData.completedDays = [];
       if (userData.completedDays.indexOf(day) === -1) userData.completedDays.push(day);
       if (day < 60) userData.currentDay = day + 1;
