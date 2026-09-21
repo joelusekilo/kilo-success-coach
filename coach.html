@@ -951,10 +951,8 @@ function syncProgressToNotion(userData) {
     body: JSON.stringify({
       pageId: member.notionId,
       properties: {
-        'Current Day': day,
         'Days Completed': completed,
         'Phase': phase,
-        'Avg Score': avg,
         'Status': status,
         'date:Last Active:start': today,
         'date:Last Active:is_datetime': 0
