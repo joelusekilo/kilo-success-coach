@@ -393,124 +393,152 @@ var PRE_CHECKS = {
   ],
   31: [{q:'What makes Day 31 different from Day 19?', opts:['The products are harder','You handle the interaction completely independently without pre-approval','You observe instead of doing','There are more tickets'], ans:1},
     {q:'Your daily rhythm should be drafted by when?', opts:['End of Week 7','Day 31','End of Phase 2','Day 45'], ans:1},
-    {q:'After your first solo interaction what do you document?', opts:['Just the ticket number','Client, issue, resolution, time taken, confidence level, what you would do differently'], ans:1}
+    {q:'After your first solo interaction what do you document?', opts:['Just the ticket number','Client, issue, resolution, time taken, confidence level, what you would do differently','Nothing - just move on','The client name and date only'], ans:1}
   ],
-  32: [{q:'A client book entry should always include what?', opts:['Just the gym name','Name, products, last touchpoint, status, open items, and key notes'], ans:1},
-    {q:'Proactive beats reactive means what in practice?', opts:['You respond faster to tickets','You reach out before clients have problems','You handle more tickets per day','You escalate less'], ans:1},
-    {q:'What is the green/yellow/red health framework used to assess?', opts:['Product knowledge','The state of each client relationship in your book'], ans:1}
+  32: [
+    {q:'A client book entry should always include which of the following?', opts:['Just the gym name and phone number','Name, products, last touchpoint, status, open items, and key notes','Only open support tickets','The gym owner contact info only'], ans:1},
+    {q:'Proactive beats reactive means what in practice?', opts:['You respond faster to tickets','You handle more tickets per day','You reach out before clients have problems','You escalate less often'], ans:2},
+    {q:'What is the green/yellow/red health framework used to assess?', opts:['The state of each client relationship in your book','Product knowledge scores','Ticket resolution speed','Revenue per client'], ans:0}
   ],
   33: [
-    {q:'Which of these is listed in the Day 33 lesson as a trigger for proactive outreach?', opts:['A client emails you first','A client has not had a check-in call in over 60 days','A client upgrades their plan','A client is new to Kilo'], ans:1},
-    {q:'What makes proactive outreach feel genuine rather than scripted?', opts:['Using a polished template','Referencing something specific to that client and having a clear reason for reaching out','Keeping it under one sentence','Sending it on a Monday'], ans:1},
-    {q:'According to the lesson, how long should a proactive outreach message be?', opts:['One sentence','Three to five sentences','A full paragraph','As long as needed'], ans:1}
+    {q:'Which of these is listed in the Day 33 lesson as a trigger for proactive outreach?', opts:['A client emails you first','A client is new to Kilo','A client has not had a check-in call in over 60 days','A client upgrades their plan'], ans:2},
+    {q:'What makes proactive outreach feel genuine rather than scripted?', opts:['Sending it on a Monday','Keeping it under one sentence','Using a polished template','Referencing something specific to that client and having a clear reason for reaching out'], ans:3},
+    {q:'According to the lesson, how long should a proactive outreach message be?', opts:['One sentence','A full paragraph','Three to five sentences','As long as needed'], ans:2}
   ],
-  34: [{q:'In DeskPro triage what gets handled first?', opts:['Oldest tickets','Most urgent issues like site down or billing errors','Easiest to answer','Newest tickets'], ans:1},
-    {q:'How long should a ticket sit waiting on a client before you follow up?', opts:['Never follow up','A reasonable timeframe based on urgency - typically 2-3 business days','Two weeks','One month'], ans:1},
-    {q:'What must always be logged before closing a resolved ticket?', opts:['Just the resolution','The issue, resolution, time taken, and any follow-up needed'], ans:1}
+  34: [
+    {q:'In DeskPro triage what gets handled first?', opts:['Oldest tickets','Easiest to answer','Newest tickets','Most urgent issues like site down or billing errors'], ans:3},
+    {q:'According to the SLA standards how long before you follow up on a ticket waiting on a client?', opts:['Two weeks','One month','Never - wait for them','After 2 business days'], ans:3},
+    {q:'What must always be logged before closing a resolved ticket?', opts:['The issue, resolution, time taken, and any follow-up needed','Just the resolution','The ticket number only','Client name and date'], ans:0}
   ],
-  35: [{q:'Your interaction log from Week 7 should contain what for every entry?', opts:['Just the client name','Client, issue, resolution, time taken, confidence level, what you would change'], ans:1},
-    {q:'The Week 7 team lead review is a checkpoint for what?', opts:['Checking product knowledge scores','Reviewing your first week of independent work and setting Week 8 focus'], ans:1},
+  35: [
+    {q:'Your interaction log from Week 7 should contain what for every entry?', opts:['Just the client name','Client, issue, resolution, time taken, confidence level, what you would change','The ticket number and date only','A summary of the product used'], ans:1},
+    {q:'The Week 7 team lead review is a checkpoint for what?', opts:['Checking product knowledge test scores','Reviewing your first week of independent work and setting Week 8 focus','Completing your Phase 1 assessment','Getting assigned new clients'], ans:1},
     {q:'By end of Week 7 you should have logged at least how many independent interactions?', opts:['2','5','8','15'], ans:2}
   ],
-  36: [{q:'Gap Day 1 is structured around what four steps?', opts:['Read, watch, ask, practice','Go back to source, do something hands-on, write plain-language explanation, test yourself'], ans:1},
-    {q:'The most important of the four gap work steps is which?', opts:['Reading the source material','Doing something hands-on in the actual platform'], ans:1},
-    {q:'After Gap Day 1 you should send your team lead what?', opts:['Nothing','A short summary of your top gaps, what you did, and what still needs work'], ans:1}
+  36: [
+    {q:'Gap Day 1 is structured around four steps. Which list is correct?', opts:['Read, watch, ask, practice','Read all articles, take notes, quiz yourself, repeat','Go back to source, do something hands-on, write plain-language explanation, test yourself','Watch videos, read articles, ask questions, move on'], ans:2},
+    {q:'The most important of the four gap work steps is which?', opts:['Writing your plain-language explanation','Doing something hands-on in the actual platform','Reading the source material','Testing yourself with questions'], ans:1},
+    {q:'After Gap Day 1 you should send your team lead what?', opts:['Nothing - gaps are private','A short summary of your top gaps, what you did, and what still needs work','A request for more time','A list of all 60 lessons reviewed'], ans:1}
   ],
-  37: [{q:'If reading and hands-on practice are not closing a gap after two days what should you do?', opts:['Keep reading','Ask your team lead to walk you through it directly'], ans:1},
-    {q:'Gap Day 2 includes preparation for what the following day?', opts:['A team meeting','The final complex scenario day'], ans:1},
-    {q:'Redoing a hard scenario from Days 26-29 without looking at your previous answer tests what?', opts:['Your memory','How your thinking has evolved and what you actually retained'], ans:1}
+  37: [
+    {q:'If reading and hands-on practice are not closing a gap after two days what should you do?', opts:['Keep reading the same articles','Move on and come back later','Ask your team lead to walk you through it directly','Watch a video instead'], ans:2},
+    {q:'Gap Day 2 includes preparation for what the following day?', opts:['A team meeting','Week 9 kickoff','The final complex scenario day','Your Phase 3 handover'], ans:2},
+    {q:'Redoing a hard scenario from Days 26-29 without looking at your previous answer tests what?', opts:['Your memory','How your thinking has evolved and what you actually retained','Your typing speed','Whether you need more time'], ans:1}
   ],
-  38: [{q:'The final complex scenario day is designed to be what?', opts:['Easy and confidence building','The hardest practice of the program - designed to push you to your limit'], ans:1},
-    {q:'Scenario 1 on Day 38 involves a client whose website form has been broken for two weeks. What is the first thing you write?', opts:['An investigation report','The actual first response you would send to the client within 30 minutes'], ans:1},
-    {q:'The inherited client scenario requires you to write what at the end?', opts:['A product knowledge summary','The follow-up email you would send after your first call'], ans:1}
+  38: [
+    {q:'The final complex scenario day is designed to be what?', opts:['A review of Phase 1 content','Easy and confidence building','A product knowledge quiz','The hardest practice of the program - designed to push you to your limit'], ans:3},
+    {q:'Scenario 1 on Day 38 involves a client with a broken website form. What is the first thing you write?', opts:['A product knowledge summary','An internal escalation note','The actual first response you would send to the client within 30 minutes','A list of things to investigate'], ans:2},
+    {q:'The inherited client scenario requires you to write what at the end?', opts:['The follow-up email you would send after your first call','A product knowledge summary','A Basecamp to-do','An escalation to your team lead'], ans:0}
   ],
-  39: [{q:'What is the one-thing rule for feedback?', opts:['Give one compliment and one criticism','If you could only say one thing, say the most important thing - not a list of everything'], ans:1},
-    {q:'Good feedback is specific meaning what?', opts:['It is long and detailed','It names exactly what worked or did not and why - not just good tone or unclear'], ans:1},
-    {q:'Peer review teaches you as much about your own work as it does about your teammate because of what?', opts:['You get to judge others','Articulating what good looks like sharpens your own instincts'], ans:1}
+  39: [
+    {q:'What is the one-thing rule for feedback?', opts:['Give one compliment and one criticism','If you could only say one thing, say the most important thing - not a list of everything','Always start with a positive','Limit feedback to three minutes'], ans:1},
+    {q:'Good feedback is specific meaning what?', opts:['It is long and detailed','It is delivered in writing not verbally','It names exactly what worked or did not and why - not just vague praise or criticism','It covers every issue observed'], ans:2},
+    {q:'Peer review teaches you as much about your own work as it does about your teammate. Why?', opts:['You get to judge others','It counts toward your score','Articulating what good looks like sharpens your own instincts','It is required by the program'], ans:2}
   ],
-  40: [{q:'Phase 3 Independence means operating with how much oversight?', opts:['Full team lead oversight','Minimal oversight - you own your book and your outcomes'], ans:1},
-    {q:'What does a Phase 2 wrap-up team lead review formally assess?', opts:['Your product knowledge test scores only','Your readiness to carry a full client load in Phase 3'], ans:1},
+  40: [
+    {q:'Phase 3 Independence means operating with how much oversight?', opts:['Minimal oversight - you own your book and your outcomes','Full team lead oversight','Weekly check-in only','No oversight at all'], ans:0},
+    {q:'What does a Phase 2 wrap-up team lead review formally assess?', opts:['Your product knowledge test scores only','Your readiness to carry a full client load in Phase 3','Whether you need to repeat Phase 1','Your ticket close rate'], ans:1},
     {q:'After Phase 2 you should be able to handle what percentage of client interactions independently?', opts:['25%','50%','The majority','All of them'], ans:2}
   ],
-  41: [{q:'What is a client book?', opts:['A help article collection','Your full list of assigned clients with status, history, and key notes for each'], ans:1},
-    {q:'Client book entries should be uniform across the team so that what is possible?', opts:['Everyone uses the same font','Anyone can pick up another persons book and understand the situation immediately'], ans:1},
-    {q:'After the full handover your first priority is what?', opts:['Reading all the help articles again','Working through any urgent items that surfaced during the handover conversation'], ans:1}
+  41: [
+    {q:'What is a client book?', opts:['Your full list of assigned clients with status, history, and key notes for each','A help article collection','A DeskPro ticket queue','A Notion template for meeting notes'], ans:0},
+    {q:'Client book entries should be uniform across the team. Why?', opts:['Everyone uses the same font','It is required by the SLA','Anyone can pick up another persons book and understand the situation immediately','It looks better in Notion'], ans:2},
+    {q:'After the full client book handover your first priority is what?', opts:['Reading all the help articles again','Working through any urgent items that surfaced during the handover conversation','Scheduling calls with every client','Updating Notion'], ans:1}
   ],
-  42: [{q:'A green client means what?', opts:['They are a new client','They are active, engaged, getting results, and have no open issues'], ans:1},
-    {q:'A red client means what?', opts:['They have a billing issue','Low activity, declining engagement, no recent touchpoint, or known dissatisfaction'], ans:1},
-    {q:'After the health assessment what should you build before taking any action?', opts:['A report for Kaleda','A weekly action plan prioritizing red clients first'], ans:1}
+  42: [
+    {q:'A green client means what?', opts:['They are a new client','They pay on time','They have not contacted support recently','They are active, engaged, getting results, and have no open issues'], ans:3},
+    {q:'A red client means what?', opts:['They have a billing issue','They are new to Kilo','Low activity, declining engagement, no recent touchpoint, or known dissatisfaction','They requested a call'], ans:2},
+    {q:'After the health assessment what should you build before taking any action?', opts:['A report for Kaleda','A weekly action plan prioritizing red clients first','A list of all green clients','A DeskPro ticket for each red client'], ans:1}
   ],
-  43: [{q:'Proactive outreach at scale means reaching which clients this week?', opts:['Only red clients','Every client who needs a touchpoint based on your health assessment and action plan'], ans:1},
-    {q:'What must every proactive message reference to avoid feeling like a template?', opts:['The Kilo product they use','Something specific to that client situation or account'], ans:1},
-    {q:'Proactive work should complement reactive work not compete with it - what does that mean in practice?', opts:['Do proactive work only on Fridays','Build proactive outreach into your daily rhythm alongside DeskPro triage'], ans:1}
+  43: [
+    {q:'Proactive outreach at scale means reaching which clients this week?', opts:['Only red clients','Only green clients','Your newest clients only','Every client who needs a touchpoint based on your health assessment and action plan'], ans:3},
+    {q:'What must every proactive message reference to avoid feeling like a template?', opts:['The Kilo product they use','Something specific to that client situation or account','Your name and title','A recent help center update'], ans:1},
+    {q:'Proactive work should complement reactive work not replace it. What does that mean in practice?', opts:['Do proactive work only on Fridays','Do proactive work only when DeskPro is empty','Build proactive outreach into your daily rhythm alongside DeskPro triage','Alternate days between reactive and proactive'], ans:2}
   ],
-  44: [{q:'An independent work day in Phase 3 means what?', opts:['No client work','You run your full daily rhythm with no prescribed tasks - just the job'], ans:1},
-    {q:'The end of day reflection on independent work days asks you to do what?', opts:['File a report to your team lead','Answer structured questions about what was hard, what went well, and what to improve tomorrow'], ans:1},
-    {q:'On an independent work day you should also do what beyond client work?', opts:['Nothing extra','Contribute to the team in at least one way'], ans:1}
+  44: [
+    {q:'An independent work day in Phase 3 means what?', opts:['No client work today','A day with only product knowledge review','You run your full daily rhythm with no prescribed tasks - just the job','A day off structured tasks to read articles'], ans:2},
+    {q:'The end of day reflection on independent work days asks you to do what?', opts:['File a formal report to your team lead','Answer structured questions about what was hard, what went well, and what to improve tomorrow','Send a summary to Laura','Update the Notion tracker only'], ans:1},
+    {q:'On an independent work day what should you contribute beyond your own client work?', opts:['Nothing extra - focus on your book','Contribute to the team in at least one way','Complete a full product review','Send proactive outreach to every client'], ans:1}
   ],
-  45: [{q:'Week 9 wrap-up reviews what main thing?', opts:['Product knowledge quiz scores','Your first full week of client ownership - health, rhythm, and interaction quality'], ans:1},
-    {q:'Your updated client health summary for the team lead should show what?', opts:['Just the red clients','How many are green, yellow, and red and whether anything changed this week'], ans:1},
-    {q:'The interaction log review looks at patterns meaning what?', opts:['Just counting tickets closed','What types of issues came up most, your quality level, and where to improve'], ans:1}
+  45: [
+    {q:'Week 9 wrap-up reviews what main thing?', opts:['Product knowledge quiz scores','Your first full week of client ownership - health, rhythm, and interaction quality','The number of tickets closed','GLM and GMS certification'], ans:1},
+    {q:'Your updated client health summary for the team lead should show what?', opts:['Just the red clients','A list of all open tickets','How many are green, yellow, and red and whether anything changed this week','Only clients you spoke with this week'], ans:2},
+    {q:'The interaction log review looks at patterns meaning what?', opts:['Just counting tickets closed','Looking at the oldest tickets first','What types of issues came up most, your quality level, and where to improve','Comparing your count to teammates'], ans:2}
   ],
-  46: [{q:'Knowing a client is on your book versus knowing their business means what practically?', opts:['Knowing their name versus knowing their revenue','Having their contact info versus understanding their gym type, goals, history, and challenges'], ans:1},
-    {q:'Client research should include looking at what sources?', opts:['Just DeskPro tickets','Their Kilo product activity, their interaction history, and their public gym presence'], ans:1},
-    {q:'Why does understanding a client business make every interaction better?', opts:['It makes you look smart','It lets you be specific and relevant instead of generic'], ans:1}
+  46: [
+    {q:'Knowing a client is on your book versus knowing their business - what is the difference?', opts:['Knowing their revenue versus knowing their name','Having their contact info versus understanding their gym type, goals, history, and challenges','Knowing their product versus knowing their contract','Having their email versus having their phone number'], ans:1},
+    {q:'Client research should include looking at what sources?', opts:['Just DeskPro tickets','Their Kilo product activity, their interaction history, and their public gym presence','Only their GMS data','Their GLM pipeline only'], ans:1},
+    {q:'Why does understanding a client business make every interaction better?', opts:['It makes you look smart','It lets you be specific and relevant instead of generic','It satisfies the SLA requirements','It reduces the number of tickets'], ans:1}
   ],
-  47: [{q:'A check-in call done well feels like what?', opts:['A formal review','Catching up with someone who genuinely cares about their business'], ans:1},
-    {q:'Your follow-up email after a check-in should be how long?', opts:['One full page of notes','Three to five sentences maximum covering action items and anything promised'], ans:1},
-    {q:'Before a check-in call you should always review what?', opts:['The help articles for that product','The client history, open items, and anything they mentioned about their goals previously'], ans:1}
+  47: [
+    {q:'A check-in call done well feels like what?', opts:['A formal quarterly review','A scripted checklist walkthrough','Catching up with someone who genuinely cares about their business','A troubleshooting session'], ans:2},
+    {q:'Your follow-up email after a check-in should be how long?', opts:['One full page of detailed notes','Three to five sentences covering action items and anything promised','As long as the call was','No email needed after a check-in'], ans:1},
+    {q:'Before a check-in call you should always review what?', opts:['The product changelog','The help center articles for their product','The client history, open items, and anything they mentioned about their goals previously','Your own interaction log only'], ans:2}
   ],
-  48: [{q:'A growth opportunity conversation differs from a sales pitch in what key way?', opts:['You use different words','It starts with an observation specific to their situation, not a generic product push'], ans:1},
-    {q:'Which signal suggests a client might benefit from GMS if they do not already have it?', opts:['They have a busy website','They mention managing member payments manually in a spreadsheet'], ans:1},
-    {q:'Before recommending GMS to a GLM-only client what should you always do first?', opts:['Send them the pricing page','Ask a question to confirm the problem is real before making any recommendation'], ans:1}
+  48: [
+    {q:'What signals in a client account suggest a growth opportunity worth raising?', opts:['They email support frequently','They have been a client for over a year','They mention managing something manually that GMS or GLM could automate','They recently had a website update'], ans:2},
+    {q:'How do you open a growth opportunity conversation without it feeling like a sales pitch?', opts:['Start with pricing information','It starts with an observation specific to their situation, not a generic product push','Always ask permission first','Send an email before the call'], ans:1},
+    {q:'Before recommending GMS to a GLM-only client what should you always do first?', opts:['Send them the pricing page','Ask a question to confirm the problem is real before making any recommendation','Schedule a demo call','Get approval from your team lead'], ans:1}
   ],
-  49: [{q:'If you did not act on a growth opportunity this week what is the most honest reason to examine?', opts:['There were no opportunities','Reactive work crowded it out or you were not sure how to open the conversation'], ans:1},
-    {q:'A client book that is starting to slip means what specifically?', opts:['You have too many clients','Entries are not being updated, touchpoints are being missed, or health ratings are stale'], ans:1},
-    {q:'The Week 10 check-in should include what update?', opts:['Just a verbal summary','An updated health summary and a specific growth opportunity status update'], ans:1}
+  49: [
+    {q:'If you did not act on a growth opportunity this week what is the most honest reason to examine?', opts:['There were no opportunities','The client was not ready','Reactive work crowded it out or you were not sure how to open the conversation','Your team lead said not to'], ans:2},
+    {q:'A client book that is starting to slip means what specifically?', opts:['You have too many clients','Entries are not being updated, touchpoints are being missed, or health ratings are stale','A client is about to cancel','Your DeskPro queue is full'], ans:1},
+    {q:'The Week 10 check-in should include what update?', opts:['Just a verbal summary','An updated health summary and a specific growth opportunity status update','A full product knowledge review','Only escalations from the week'], ans:1}
   ],
-  50: [{q:'Deepening a client relationship means going beyond reactive support to what?', opts:['Sending more emails','Understanding their business enough to be genuinely useful before they ask'], ans:1},
-    {q:'If a client moved from yellow to green this week because of your proactive work what should you note?', opts:['Nothing extra','What specifically you did that caused the improvement so you can repeat it'], ans:1},
-    {q:'Week 10 wrap-up is described as a milestone because it is what?', opts:['The end of Phase 3','Halfway through Phase 3 and two thirds through the entire program'], ans:1}
+  50: [
+    {q:'Deepening a client relationship means going beyond reactive support to what?', opts:['Sending more emails','Calling every week','Understanding their business enough to be genuinely useful before they ask','Closing more tickets'], ans:2},
+    {q:'If a client moved from yellow to green because of your proactive work what should you note?', opts:['Nothing extra','What specifically you did that caused the improvement so you can repeat it','That your score will go up','To tell your team lead immediately'], ans:1},
+    {q:'Week 10 wrap-up is a milestone because it marks what point in the program?', opts:['The end of Phase 3','The halfway point of Phase 3 and two thirds through the entire program','The start of graduation prep','The end of independent interactions'], ans:1}
   ],
-  51: [{q:'A knowledge share is worth creating when what is true?', opts:['You have an hour to spare','You learned something that was not written down anywhere and would help the whole team'], ans:1},
-    {q:'A good knowledge share document should be what?', opts:['Long and comprehensive','Short enough to actually be read and specific enough to be immediately usable'], ans:1},
-    {q:'After creating your knowledge share what do you do with it?', opts:['Keep it in your personal Notion','Share with your team lead and add to the team Notion space if appropriate'], ans:1}
+  51: [
+    {q:'A knowledge share is worth creating when what is true?', opts:['You have an hour to spare','A help center article already covers it','You learned something that was not written down anywhere and would help the whole team','Your team lead requests it'], ans:2},
+    {q:'A good knowledge share document should be what?', opts:['Long and comprehensive so nothing is missed','Short enough to actually be read and specific enough to be immediately usable','At least three pages','Formatted like a formal policy'], ans:1},
+    {q:'After creating your knowledge share what do you do with it?', opts:['Keep it in your personal Notion','Share with your team lead and add to the team Notion space if appropriate','Delete it after the week','Send it to Laura only'], ans:1}
   ],
-  52: [{q:'Supporting a newer team member means what approach?', opts:['Teaching them everything you know in one session','Let them drive and ask questions - your job is to support not lecture'], ans:1},
-    {q:'Teaching someone else reveals what about your own knowledge?', opts:['Nothing new','Where you can explain things clearly versus where you only thought you understood'], ans:1},
-    {q:'The mentoring session is valuable for the mentor because of what principle?', opts:['You get credit for helping','You cannot explain something clearly unless you actually understand it'], ans:1}
+  52: [
+    {q:'Supporting a newer team member means what approach?', opts:['Teaching them everything you know in one session','Let them drive and ask questions - your job is to support not lecture','Doing their work for them while they watch','Sending them articles to read'], ans:1},
+    {q:'Teaching someone else reveals what about your own knowledge?', opts:['Nothing new','That you know more than you thought','Where you can explain things clearly versus where you only thought you understood','How long you have been at Kilo'], ans:2},
+    {q:'The mentoring session is most valuable for the mentor because of what principle?', opts:['You get credit for helping','Seniority is rewarded','You cannot explain something clearly unless you actually understand it','It looks good on your review'], ans:2}
   ],
-  53: [{q:'A process improvement suggestion should identify what four things?', opts:['The person to blame, the fix, the cost, and the timeline','The friction, why it matters, what you would change, and what it would take to implement'], ans:1},
-    {q:'Where should you look for friction to improve?', opts:['Only your own workflow','Internal processes, client experience, and the onboarding program itself'], ans:1},
-    {q:'Presenting a process improvement to your team lead is not about being right - it is about what?', opts:['Proving you are smarter','Contributing constructively and being open to pushback'], ans:1}
+  53: [
+    {q:'A process improvement suggestion should identify what four things?', opts:['The person to blame, the fix, the cost, and the timeline','The friction, why it matters, what you would change, and what it would take to implement','The problem, the solution, the owner, and the deadline','What broke, when it broke, who noticed, and how to prevent it'], ans:1},
+    {q:'Where should you look for friction to improve?', opts:['Only your own workflow','Internal processes, client experience, and the onboarding program itself','Only client-facing tools','Only things Kaleda has mentioned'], ans:1},
+    {q:'Presenting a process improvement to your team lead is not about being right. It is about what?', opts:['Proving you are smarter than the current process','Getting a promotion','Contributing constructively and being open to pushback','Documenting that you raised the issue'], ans:2}
   ],
-  54: [{q:'Contributing beyond your own client work in Phase 3 means what specifically?', opts:['Handling more tickets','Helping a teammate, flagging something to improve, or sharing knowledge proactively'], ans:1},
-    {q:'Which habit from the program is most important to carry forward permanently?', opts:['Daily reflection and end of day review','Reading all help articles weekly'], ans:0},
-    {q:'An independent work day in Week 11 should feel different from Week 9 in what way?', opts:['It should be easier because you have fewer clients','You are not just doing the job - you are actively contributing to the team around you'], ans:1}
+  54: [
+    {q:'Contributing beyond your own client work in Phase 3 means what specifically?', opts:['Handling more tickets than your share','Helping a teammate, flagging something to improve, or sharing knowledge proactively','Working longer hours','Attending every team meeting'], ans:1},
+    {q:'Which habit from the program is most important to carry forward permanently?', opts:['Reading all help articles weekly','Daily reflection and end of day review','Logging every ticket in detail','Attending weekly team calls'], ans:1},
+    {q:'An independent work day in Week 11 should feel different from Week 9 in what way?', opts:['It should be easier because you have fewer clients','There are no DeskPro tickets to handle','The products are more complex now','You are not just doing the job - you are actively contributing to the team around you'], ans:3}
   ],
-  55: [{q:'The Week 11 looking back exercise asks you to compare what?', opts:['Phase 1 and Phase 2 scores','Who you were on Day 1 to who you are now'], ans:1},
-    {q:'What should you bring to the Week 11 team lead check-in that is different from previous weeks?', opts:['Just your client book update','A preview of what you want to accomplish in your final week'], ans:1},
-    {q:'Contributing back in Week 11 builds what skill beyond client success?', opts:['Technical product knowledge','Leadership - making the team and program better for those who come after you'], ans:1}
+  55: [
+    {q:'The Week 11 looking back exercise asks you to compare what?', opts:['Phase 1 and Phase 2 quiz scores','Your ticket count then versus now','Who you were on Day 1 to who you are now','Your product knowledge against the team average'], ans:2},
+    {q:'What should you bring to the Week 11 team lead check-in that is different from previous weeks?', opts:['Just your client book update','A preview of what you want to accomplish in your final week','A full product knowledge summary','Your complete interaction log from the whole program'], ans:1},
+    {q:'Contributing back in Week 11 builds what skill beyond client success?', opts:['Technical product knowledge','Faster ticket resolution','Leadership - making the team and program better for those who come after you','Advanced GLM configuration skills'], ans:2}
   ],
-  56: [{q:'The final self-assessment covers how many areas?', opts:['3','6','More than 15 across products, communication, independence, and self-awareness'], ans:2},
-    {q:'Comparing your Day 20 assessment to Day 56 shows what?', opts:['How many tickets you closed','Your growth across the full program and where gaps still exist'], ans:1},
-    {q:'Any item still rated 1 on Day 56 requires what?', opts:['Ignoring it','A specific post-graduation plan to close that gap'], ans:1}
+  56: [
+    {q:'The final self-assessment covers how many areas?', opts:['3','6','More than 15 across products, communication, independence, and self-awareness','10 exactly'], ans:2},
+    {q:'Comparing your Day 20 assessment to Day 56 shows what?', opts:['How many tickets you closed','How many pre-checks you passed','Your team ranking','Your growth across the full program and where gaps still exist'], ans:3},
+    {q:'Any item still rated 1 on Day 56 requires what?', opts:['Ignoring it - you are done','Repeating Phase 1','A specific post-graduation plan to close that gap','Flagging it to Kaleda'], ans:2}
   ],
-  57: [{q:'The program retrospective asks you to evaluate all three phases. What do you assess for each one?', opts:['What you liked and disliked','What was most valuable, what could be cut, whether pacing was right, and what was missing'], ans:1},
-    {q:'Your retrospective is useful because it does what for future team members?', opts:['Nothing','Directly improves the program they will go through'], ans:1},
-    {q:'The retrospective asks you to be honest not diplomatic - what does that mean in practice?', opts:['Say whatever you want','Give real feedback about what did not work even if it feels uncomfortable'], ans:1}
+  57: [
+    {q:'The program retrospective asks you to evaluate all three phases. What do you assess for each one?', opts:['What you liked and disliked','What was most valuable, what could be cut, whether pacing was right, and what was missing','Your score versus the team average','Which lessons took the longest'], ans:1},
+    {q:'Your retrospective is useful because it does what for future team members?', opts:['Directly improves the program they will go through','Gets filed and never read','Counts toward your score','Shows your team lead your opinion'], ans:0},
+    {q:'The retrospective asks you to be honest not diplomatic. What does that mean in practice?', opts:['Say whatever you want with no filter','Only share positive feedback','Give real feedback about what did not work even if it feels uncomfortable','Keep it short so no one reads it'], ans:2}
   ],
-  58: [{q:'The final independent work day is a preview of what?', opts:['The graduation ceremony','Every day after this program ends - no scaffolding, just the job'], ans:1},
-    {q:'The final end of day reflection asks you what that no previous reflection has asked?', opts:['Your product scores','What kind of Success Manager you want to be six months from now and what you need to do next week to get there'], ans:1},
-    {q:'Is there anything different about how you should approach client work on Day 58 compared to Day 44?', opts:['No it is the same','You are now contributing to the team not just doing your own work'], ans:1}
+  58: [
+    {q:'The final independent work day is a preview of what?', opts:['The graduation ceremony','A product knowledge test','Every day after this program ends - no scaffolding, just the job','Phase 4 of the program'], ans:2},
+    {q:'The final end of day reflection asks you what that no previous reflection has asked?', opts:['Your product scores','What kind of Success Manager you want to be six months from now and what you need to do next week to get there','How many tickets you closed','Your favorite lesson'], ans:1},
+    {q:'How should you approach client work on Day 58 compared to Day 44?', opts:['No difference - the job is the same','You handle fewer tickets now','You skip the reflection','You are now contributing to the team not just doing your own work'], ans:3}
   ],
-  59: [{q:'The team lead feedback session is a formal what?', opts:['Performance review that affects your contract','A developmental conversation covering growth, strengths, development areas, and readiness'], ans:1},
-    {q:'The peer feedback session focuses on what?', opts:['Product knowledge only','How you come across in real interactions from a teammate perspective'], ans:1},
-    {q:'Before your feedback sessions you should prepare what?', opts:['Nothing - just listen','Three to four specific questions you want answered including what they may have held back'], ans:1}
+  59: [
+    {q:'The team lead feedback session is a formal what?', opts:['Performance review that affects your contract','Termination risk assessment','Product certification test','Developmental conversation covering growth, strengths, development areas, and readiness'], ans:3},
+    {q:'The peer feedback session focuses on what?', opts:['Product knowledge only','How you come across in real interactions from a teammate perspective','Your DeskPro metrics','Your score versus theirs'], ans:1},
+    {q:'Before your feedback sessions you should prepare what?', opts:['Nothing - just listen and take notes','Three to four specific questions you want answered including what they may have held back','A defense of your performance','A summary of your scores'], ans:1}
   ],
-  60: [{q:'The graduation conversation with your team lead is a handover from what to what?', opts:['Phase 2 to Phase 3','The program to your full ongoing role on the team'], ans:1},
-    {q:'Your 30-day post-graduation commitment should cover what three areas?', opts:['Products, tickets, and calls','A specific gap to close, a client relationship to invest in, and a team contribution to make'], ans:1},
-    {q:'The program retrospective you wrote on Day 57 benefits whom most directly?', opts:['Just your team leads','The next person who goes through this program'], ans:1}
+  60: [
+    {q:'The graduation conversation with your team lead is a handover from what to what?', opts:['Phase 2 to Phase 3','The program to your full ongoing role on the team','Training mode to observation mode','A probationary period to full employment'], ans:1},
+    {q:'Your 30-day post-graduation commitment should cover what three areas?', opts:['Products, tickets, and calls','Speed, quality, and volume','A specific gap to close, a client relationship to invest in, and a team contribution to make','GLM, GMS, and Websites'], ans:2},
+    {q:'The program retrospective you wrote on Day 57 benefits whom most directly?', opts:['Just your team leads','You personally','The next person who goes through this program','Kaleda and Laura'], ans:2}
   ]
 };
 
@@ -1342,7 +1370,7 @@ function finishQuiz() {
       if (userData.completedDays.indexOf(day) === -1) userData.completedDays.push(day);
       if (day < 60) userData.currentDay = day + 1;
       saveLocal();
-      feedback = 'Perfect score - you know this material. Day ' + day + ' is marked complete and you are moving to Day ' + (day + 1) + ': ' + (DAYS[day+1] ? DAYS[day+1].title : 'next day') + '.';
+      feedback = day < 60 ? 'Perfect score - you know this material. Day ' + day + ' is marked complete and you are moving to Day ' + (day + 1) + ': ' + (DAYS[day+1] ? DAYS[day+1].title : '') + '.' : 'Perfect score - Day 60 is marked complete. You have finished the full 60-day program. Go have your graduation conversation with your team lead.';
       updateHeader();
       updateSidebar();
       updateProgress();
@@ -1361,7 +1389,7 @@ function finishQuiz() {
       if (userData.completedDays.indexOf(day) === -1) userData.completedDays.push(day);
       if (day < 60) userData.currentDay = day + 1;
       saveLocal();
-      feedback = 'Perfect score - Day ' + day + ' is marked complete and you are moving to Day ' + (day + 1) + ': ' + (DAYS[day+1] ? DAYS[day+1].title : 'next day') + '.';
+      feedback = day < 60 ? 'Perfect score - Day ' + day + ' is marked complete and you are moving to Day ' + (day + 1) + ': ' + (DAYS[day+1] ? DAYS[day+1].title : '') + '.' : 'Perfect score - Day 60 is marked complete. You have finished the full 60-day program. Go have your graduation conversation with your team lead.';
       setTimeout(function() { updateHeader(); updateSidebar(); updateProgress(); }, 800);
     } else {
       saveLocal();
